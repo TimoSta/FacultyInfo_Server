@@ -1,12 +1,19 @@
 package de.uni_passau.facultyinfo.server.dto;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Article {
 
+	@XmlElement
 	private long id;
 
+	@XmlElement
 	private String name;
 
+	@XmlElement
 	private String content;
 
 	public Article(long id, String name, String content) {
