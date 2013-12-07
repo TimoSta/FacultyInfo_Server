@@ -9,14 +9,14 @@ import javax.ws.rs.core.Application;
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
-import de.uni_passau.facultyinfo.server.rest.ressource.ArticleRessource;
+import de.uni_passau.facultyinfo.server.rest.ressource.NewsRessource;
 
 @ApplicationPath("/")
 public class FacultiyInfoApplication extends Application {
 	@Override
 	public Set<Class<?>> getClasses() {
 		final Set<Class<?>> classes = new HashSet<>();
-		classes.add(ArticleRessource.class);
+		classes.add(NewsRessource.class);
 		return classes;
 	}
 
