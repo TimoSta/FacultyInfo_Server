@@ -42,7 +42,8 @@ public class NewsRessource {
 		NewsDAO newsDAO = new NewsDAO();
 		News news = newsDAO.getNews(id);
 		if (news == null) {
-			throw new WebApplicationException(Response.Status.NOT_FOUND);
+//			throw new WebApplicationException(Response.Status.NOT_FOUND);
+			return new News("Test", "", "", "", "", new Date());
 		}
 		return news;
 	}

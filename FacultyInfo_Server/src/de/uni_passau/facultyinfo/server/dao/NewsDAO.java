@@ -14,10 +14,11 @@ import de.uni_passau.facultyinfo.server.dto.News;
 public class NewsDAO {
 
 	public List<News> getNewsList() {
+		Logger.getAnonymousLogger().log(Level.SEVERE, "Test");
 		ResultSet resultSet = JDBCConnection
 				.getInstance()
 				.executeSelect(
-						"SELECT id, title, description, url, text, publishingdate FROM news");
+						"SELECT id, title, description, publishingdate FROM news");
 		if (resultSet == null) {
 			return null;
 		}
@@ -25,7 +26,7 @@ public class NewsDAO {
 		try {
 			ArrayList<News> newsList = new ArrayList<News>();
 			while (resultSet.next()) {
-				newsList.add(mapResultSetToNews(resultSet));
+				newsList.add(mapResultSetToShortNews(resultSet));
 			}
 
 			return newsList;
@@ -46,12 +47,11 @@ public class NewsDAO {
 
 		try {
 			if (resultSet.next()) {
-				Logger.getAnonymousLogger().log(Level.WARNING,
-						resultSet.getString("name"));
 				return mapResultSetToNews(resultSet);
 			}
 			return null;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -73,6 +73,15 @@ public class NewsDAO {
 								+ news.getText()
 								+ "', '"
 								+ sdf.format(news.getPublicationDate()) + "')") == 1;
+	}
+
+	private News mapResultSetToShortNews(ResultSet resultSet)
+			throws SQLException {
+		News news = new News(resultSet.getString("id"),
+				resultSet.getString("title"),
+				resultSet.getString("description"), null, null,
+				resultSet.getDate("publishingDate"));
+		return news;
 	}
 
 	private News mapResultSetToNews(ResultSet resultSet) throws SQLException {
