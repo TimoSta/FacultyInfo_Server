@@ -4,18 +4,14 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Faq {
+public class FaqCategory {
 	private String id;
-	private FaqCategory category;
 	private String title;
-	private String text;
 
-	public Faq(String id, FaqCategory category, String title, String text) {
+	public FaqCategory(String id, String title) {
 		super();
 		this.id = id;
-		this.category = category;
 		this.title = title;
-		this.text = text;
 	}
 
 	public String getId() {
@@ -26,14 +22,6 @@ public class Faq {
 		this.id = id;
 	}
 
-	public FaqCategory getCategory() {
-		return category;
-	}
-
-	public void setCategory(FaqCategory category) {
-		this.category = category;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -42,11 +30,4 @@ public class Faq {
 		this.title = title;
 	}
 
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
 }
