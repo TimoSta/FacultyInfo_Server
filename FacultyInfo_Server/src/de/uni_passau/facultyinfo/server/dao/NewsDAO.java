@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import de.uni_passau.facultyinfo.server.dao.connection.JDBCConnection;
 import de.uni_passau.facultyinfo.server.dto.News;
@@ -14,23 +12,16 @@ import de.uni_passau.facultyinfo.server.dto.News;
 public class NewsDAO {
 
 	public List<News> getNewsList() {
-		Logger.getAnonymousLogger().log(Level.SEVERE, "Test");
-		ResultSet resultSet = JDBCConnection
-				.getInstance()
-				.executeSelect(
-						"SELECT id, title, description, publishingdate FROM news");
+		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
+				"SELECT id, title, description, publishingdate FROM news");
 		if (resultSet == null) {
 			return null;
 		}
 
 		try {
-			ArrayList<News> newsList = new ArrayList<News>();
-			while (resultSet.next()) {
-				newsList.add(mapResultSetToShortNews(resultSet));
-			}
-
-			return newsList;
+			return mapResultSetToNewsList(resultSet);
 		} catch (SQLException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -46,10 +37,7 @@ public class NewsDAO {
 		}
 
 		try {
-			if (resultSet.next()) {
-				return mapResultSetToNews(resultSet);
-			}
-			return null;
+			return mapResultSetToNews(resultSet);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -75,22 +63,30 @@ public class NewsDAO {
 								+ sdf.format(news.getPublicationDate()) + "')") == 1;
 	}
 
-	private News mapResultSetToShortNews(ResultSet resultSet)
+	private ArrayList<News> mapResultSetToNewsList(ResultSet resultSet)
 			throws SQLException {
-		News news = new News(resultSet.getString("id"),
-				resultSet.getString("title"),
-				resultSet.getString("description"), null, null,
-				resultSet.getDate("publishingDate"));
-		return news;
+		ArrayList<News> newsList = new ArrayList<News>();
+		while (resultSet.next()) {
+			News news = new News(resultSet.getString("id"),
+					resultSet.getString("title"),
+					resultSet.getString("description"), null, null,
+					resultSet.getDate("publishingDate"));
+			newsList.add(news);
+		}
+
+		return newsList;
 	}
 
 	private News mapResultSetToNews(ResultSet resultSet) throws SQLException {
-		News news = new News(resultSet.getString("id"),
-				resultSet.getString("title"),
-				resultSet.getString("description"), resultSet.getString("url"),
-				resultSet.getString("text"),
-				resultSet.getDate("publishingDate"));
-		return news;
+		if (resultSet.next()) {
+			News news = new News(resultSet.getString("id"),
+					resultSet.getString("title"),
+					resultSet.getString("description"),
+					resultSet.getString("url"), resultSet.getString("text"),
+					resultSet.getDate("publishingDate"));
+			return news;
+		}
+		return null;
 	}
 
 	public void deleteAllNews() {

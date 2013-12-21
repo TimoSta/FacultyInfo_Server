@@ -1,5 +1,8 @@
 package de.uni_passau.facultyinfo.server.dto;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
@@ -7,6 +10,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 public class FaqCategory {
 	private String id;
 	private String title;
+
+	private List<Faq> faqs;
 
 	public FaqCategory(String id, String title) {
 		super();
@@ -28,6 +33,14 @@ public class FaqCategory {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public List<Faq> getFaqs() {
+		return faqs;
+	}
+
+	public void setFaqs(List<Faq> faqs) {
+		this.faqs = Collections.unmodifiableList(faqs);
 	}
 
 }
