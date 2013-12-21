@@ -27,7 +27,7 @@ public class JDBCConnection {
 	private Connection connection = null;
 
 	private Connection getConnection() throws NamingException, SQLException {
-		if (connection == null) {
+		if (connection == null || connection.isClosed()) {
 			InitialContext ctx = new InitialContext();
 			DataSource ds = (javax.sql.DataSource) ctx
 					.lookup("jdbc/FacultyInfoDB");

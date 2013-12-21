@@ -10,14 +10,16 @@ public class ContactPerson {
 	private String office;
 	private String phone;
 	private String description;
+	private ContactGroup contactGroup;
 
 	public ContactPerson(String name, String office, String phone,
-			String description) {
+			String description, ContactGroup contactGroup) {
 		super();
 		this.name = name;
 		this.office = office;
 		this.phone = phone;
 		this.description = description;
+		this.contactGroup = contactGroup;
 	}
 
 	public String getId() {
@@ -58,5 +60,13 @@ public class ContactPerson {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public ContactGroup getContactGroup() {
+		return contactGroup;
+	}
+
+	public void setContactGroup(ContactGroup contactGroup) {
+		this.contactGroup = contactGroup;
 	}
 }

@@ -7,15 +7,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 public class MapMarker {
 	public static final int TYPE_UNI = 1;
 	public static final int TYPE_CITY = 2;
-	
+
 	private String id;
 	private String description;
 	private float latitude;
 	private float longitude;
-	private int category;
+	private MapMarkerCategory category;
 
 	public MapMarker(String id, String description, float latitude,
-			float longitude, int category) {
+			float longitude, MapMarkerCategory category) {
 		super();
 		this.id = id;
 		this.description = description;
@@ -56,11 +56,11 @@ public class MapMarker {
 		this.longitude = longitude;
 	}
 
-	public int getCategory() {
+	public MapMarkerCategory getCategory() {
 		return category;
 	}
 
-	public void setCategory(int category) {
+	public void setCategory(MapMarkerCategory category) {
 		this.category = category;
 	}
 }
