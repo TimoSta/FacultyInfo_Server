@@ -1,9 +1,13 @@
 package de.uni_passau.facultyinfo.server.dao.connection;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -20,27 +24,34 @@ public class JDBCConnection {
 
 		return instance;
 	}
-	
+
 	private JDBCConnection() {
 	}
 
-	private Connection connection = null;
+	private DataSource dataSource = null;
 
 	private Connection getConnection() throws NamingException, SQLException {
-		if (connection == null || connection.isClosed()) {
+		if (dataSource == null) {
 			InitialContext ctx = new InitialContext();
-			DataSource ds = (javax.sql.DataSource) ctx
+			dataSource = (javax.sql.DataSource) ctx
 					.lookup("jdbc/FacultyInfoDB");
-			connection = ds.getConnection();
 		}
 
-		return connection;
+		return dataSource.getConnection();
 	}
 
 	public ResultSet executeSelect(String sql) {
+		return executeSelect(sql, new ArrayList<String>());
+	}
+
+	public ResultSet executeSelect(String sql, List<String> attributes) {
 		try {
-			Statement statement = getConnection().createStatement();
-			ResultSet resultSet = statement.executeQuery(sql);
+			PreparedStatement statement = getConnection().prepareStatement(sql);
+			int argumentNumber = 1;
+			for (String attribute : attributes) {
+				statement.setString(argumentNumber++, attribute);
+			}
+			ResultSet resultSet = statement.executeQuery();
 			return resultSet;
 		} catch (NamingException e) {
 			return null;
@@ -50,12 +61,22 @@ public class JDBCConnection {
 	}
 
 	public int executeStatement(String sql) {
+		return executeStatement(sql, new ArrayList<String>());
+	}
+
+	public int executeStatement(String sql, List<String> attributes) {
 		try {
-			Statement statement = getConnection().createStatement();
-			return statement.executeUpdate(sql);
+			PreparedStatement statement = getConnection().prepareStatement(sql);
+			int argumentNumber = 1;
+			for (String attribute : attributes) {
+				statement.setString(argumentNumber++, attribute);
+			}
+			return statement.executeUpdate();
 		} catch (NamingException e) {
+			Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage());
 			e.printStackTrace();
 		} catch (SQLException e) {
+			Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage());
 			e.printStackTrace();
 		}
 		return 0;

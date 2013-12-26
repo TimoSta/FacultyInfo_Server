@@ -27,11 +27,12 @@ public class NewsDAO {
 	}
 
 	public News getNews(String id) {
+		ArrayList<String> attributes = new ArrayList<String>();
+		attributes.add(id);
 		ResultSet resultSet = JDBCConnection
 				.getInstance()
 				.executeSelect(
-						"SELECT id, title, description, url, text, publishingdate FROM news WHERE id = '"
-								+ id + "'");
+						"SELECT id, title, description, url, text, publishingdate FROM news WHERE id = ?", attributes);
 		if (resultSet == null) {
 			return null;
 		}
@@ -46,21 +47,18 @@ public class NewsDAO {
 
 	public boolean createNews(News news) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-d H:m:s");
+		ArrayList<String> attributes = new ArrayList<String>();
+		attributes.add(news.getId());
+		attributes.add(news.getTitle());
+		attributes.add(news.getDescription());
+		attributes.add(news.getUrl());
+		attributes.add(news.getText());
+		attributes.add(sdf.format(news.getPublicationDate()));
 		return JDBCConnection
 				.getInstance()
 				.executeStatement(
-						"INSERT INTO news (id, title, description, url, text, publishingdate) VALUES ('"
-								+ news.getId()
-								+ "', '"
-								+ news.getTitle()
-								+ "', '"
-								+ news.getDescription()
-								+ "', '"
-								+ news.getUrl()
-								+ "', '"
-								+ news.getText()
-								+ "', '"
-								+ sdf.format(news.getPublicationDate()) + "')") == 1;
+						"INSERT INTO news (id, title, description, url, text, publishingdate) VALUES (?, ?, ?, ?, ?, ?)",
+						attributes) == 1;
 	}
 
 	private ArrayList<News> mapResultSetToNewsList(ResultSet resultSet)

@@ -2,14 +2,12 @@ package de.uni_passau.facultyinfo.server.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.uni_passau.facultyinfo.server.dao.connection.JDBCConnection;
 import de.uni_passau.facultyinfo.server.dto.Faq;
 import de.uni_passau.facultyinfo.server.dto.FaqCategory;
-import de.uni_passau.facultyinfo.server.dto.News;
 
 public class FaqDAO {
 
@@ -24,10 +22,13 @@ public class FaqDAO {
 			ArrayList<FaqCategory> faqCategories = mapResultSetToFaqCategories(resultSet);
 
 			for (FaqCategory faqCategory : faqCategories) {
-				ResultSet faqResultSet = JDBCConnection.getInstance()
+				ArrayList<String> attributes = new ArrayList<String>();
+				attributes.add(faqCategory.getId());
+				ResultSet faqResultSet = JDBCConnection
+						.getInstance()
 						.executeSelect(
-								"SELECT id, title FROM faqs WHERE category = '"
-										+ faqCategory.getId() + "'");
+								"SELECT id, title FROM faqs WHERE category = ?",
+								attributes);
 				if (faqResultSet == null) {
 					continue;
 				}
@@ -44,8 +45,10 @@ public class FaqDAO {
 	}
 
 	public Faq getFaq(String id) {
+		ArrayList<String> attributes = new ArrayList<String>();
+		attributes.add(id);
 		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
-				"SELECT id, title, text FROM faqs WHERE id = '" + id + "'");
+				"SELECT id, title, text FROM faqs WHERE id = ?", attributes);
 		if (resultSet == null) {
 			return null;
 		}
@@ -59,18 +62,25 @@ public class FaqDAO {
 	}
 
 	public boolean createFaqCategory(FaqCategory faqCategory) {
+		ArrayList<String> attributes = new ArrayList<String>();
+		attributes.add(faqCategory.getId());
+		attributes.add(faqCategory.getTitle());
 		return JDBCConnection.getInstance().executeStatement(
-				"INSERT INTO faqcategories (id, title) VALUES ('"
-						+ faqCategory.getId() + "', '" + faqCategory.getTitle()
-						+ "')") == 1;
+				"INSERT INTO faqcategories (id, title) VALUES (?, ?)",
+				attributes) == 1;
 	}
 
 	public boolean createFaq(Faq faq) {
-		return JDBCConnection.getInstance().executeStatement(
-				"INSERT INTO faqs (id, category, title, text) VALUES ('"
-						+ faq.getId() + "', '" + faq.getCategory().getId()
-						+ "', '" + faq.getTitle() + "', '" + faq.getText()
-						+ "')") == 1;
+		ArrayList<String> attributes = new ArrayList<String>();
+		attributes.add(faq.getId());
+		attributes.add(faq.getCategory().getId());
+		attributes.add(faq.getTitle());
+		attributes.add(faq.getText());
+		return JDBCConnection
+				.getInstance()
+				.executeStatement(
+						"INSERT INTO faqs (id, category, title, text) VALUES ( ?, ?, ?, ?)",
+						attributes) == 1;
 	}
 
 	private ArrayList<FaqCategory> mapResultSetToFaqCategories(

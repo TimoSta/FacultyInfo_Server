@@ -39,6 +39,7 @@ public class NewsLoader {
 				String description = element.select("description").get(0)
 						.text();
 				String url = element.select("link").get(0).text();
+				System.out.println(url);
 				SimpleDateFormat sdf = new SimpleDateFormat(
 						"E, d MMM yyyy H:m:s Z", Locale.ENGLISH);
 				Element textElement = Jsoup.connect(url).get()
@@ -46,6 +47,7 @@ public class NewsLoader {
 						.get(0);
 				textElement.select("table").get(0).html("");
 				String text = textElement.text();
+				System.out.println(text);
 				Date publicationDate = sdf.parse(element.select("pubDate")
 						.get(0).text());
 

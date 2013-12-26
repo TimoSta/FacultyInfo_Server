@@ -2,10 +2,12 @@ package de.uni_passau.facultyinfo.server.dto;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Faq {
 	private String id;
+	@XmlTransient
 	private FaqCategory category;
 	private String title;
 	private String text;
