@@ -12,8 +12,9 @@ public class BusLine {
 	private String direction;
 	private Date departure;
 
-	public BusLine(String line, String direction, Date departure) {
+	public BusLine(String id, String line, String direction, Date departure) {
 		super();
+		this.id = id;
 		this.line = line;
 		this.direction = direction;
 		this.departure = departure;
