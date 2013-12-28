@@ -32,10 +32,8 @@ public class FaqLoader {
 
 		try {
 			Document doc = connection.get();
-			result += "a";
 			Elements faqCategoryElements = doc.select("div.jwts_tabbertab");
 			for (Element faqCategoryElement : faqCategoryElements) {
-				result += "b";
 				String categoryId = UUID.randomUUID().toString();
 				String title = faqCategoryElement.attr("title");
 				FaqCategory faqCategory = new FaqCategory(categoryId, title);

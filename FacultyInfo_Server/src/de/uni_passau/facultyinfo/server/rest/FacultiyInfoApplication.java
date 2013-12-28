@@ -9,6 +9,7 @@ import javax.ws.rs.core.Application;
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
+import de.uni_passau.facultyinfo.server.rest.ressource.EventRessource;
 import de.uni_passau.facultyinfo.server.rest.ressource.FaqRessource;
 import de.uni_passau.facultyinfo.server.rest.ressource.NewsRessource;
 
@@ -19,6 +20,7 @@ public class FacultiyInfoApplication extends Application {
 		final Set<Class<?>> classes = new HashSet<>();
 		classes.add(NewsRessource.class);
 		classes.add(FaqRessource.class);
+		classes.add(EventRessource.class);
 		return classes;
 	}
 

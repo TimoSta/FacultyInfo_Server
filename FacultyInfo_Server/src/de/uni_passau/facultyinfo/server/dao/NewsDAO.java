@@ -32,7 +32,8 @@ public class NewsDAO {
 		ResultSet resultSet = JDBCConnection
 				.getInstance()
 				.executeSelect(
-						"SELECT id, title, description, url, text, publishingdate FROM news WHERE id = ?", attributes);
+						"SELECT id, title, description, url, text, publishingdate FROM news WHERE id = ?",
+						attributes);
 		if (resultSet == null) {
 			return null;
 		}
@@ -68,7 +69,7 @@ public class NewsDAO {
 			News news = new News(resultSet.getString("id"),
 					resultSet.getString("title"),
 					resultSet.getString("description"), null, null,
-					resultSet.getDate("publishingDate"));
+					resultSet.getTimestamp("publishingDate"));
 			newsList.add(news);
 		}
 
@@ -81,7 +82,7 @@ public class NewsDAO {
 					resultSet.getString("title"),
 					resultSet.getString("description"),
 					resultSet.getString("url"), resultSet.getString("text"),
-					resultSet.getDate("publishingDate"));
+					resultSet.getTimestamp("publishingDate"));
 			return news;
 		}
 		return null;

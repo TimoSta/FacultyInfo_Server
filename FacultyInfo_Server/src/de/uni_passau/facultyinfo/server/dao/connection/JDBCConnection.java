@@ -45,8 +45,10 @@ public class JDBCConnection {
 	}
 
 	public ResultSet executeSelect(String sql, List<String> attributes) {
+		Connection connection = null;
 		try {
-			PreparedStatement statement = getConnection().prepareStatement(sql);
+			connection = getConnection();
+			PreparedStatement statement = connection.prepareStatement(sql);
 			int argumentNumber = 1;
 			for (String attribute : attributes) {
 				statement.setString(argumentNumber++, attribute);
@@ -57,6 +59,14 @@ public class JDBCConnection {
 			return null;
 		} catch (SQLException e) {
 			return null;
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
@@ -65,8 +75,10 @@ public class JDBCConnection {
 	}
 
 	public int executeStatement(String sql, List<String> attributes) {
+		Connection connection = null;
 		try {
-			PreparedStatement statement = getConnection().prepareStatement(sql);
+			connection = getConnection();
+			PreparedStatement statement = connection.prepareStatement(sql);
 			int argumentNumber = 1;
 			for (String attribute : attributes) {
 				statement.setString(argumentNumber++, attribute);
@@ -78,6 +90,14 @@ public class JDBCConnection {
 		} catch (SQLException e) {
 			Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage());
 			e.printStackTrace();
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return 0;
 	}
