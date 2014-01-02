@@ -11,8 +11,10 @@ import de.uni_passau.facultyinfo.server.dto.BusLine;
 
 public class BusLineDAO {
 	public List<BusLine> getBusLines() {
-		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
-				"SELECT id, line, direction, departure FROM buslines");
+		ResultSet resultSet = JDBCConnection
+				.getInstance()
+				.executeSelect(
+						"SELECT id, line, direction, departure FROM buslines WHERE departure BETWEEN NOW() AND (NOW() + INTERVAL 1 DAY)");
 		if (resultSet == null) {
 			return null;
 		}

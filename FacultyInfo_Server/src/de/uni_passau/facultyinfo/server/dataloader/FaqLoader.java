@@ -27,7 +27,6 @@ public class FaqLoader {
 		Connection connection = Jsoup
 				.connect("http://www.neu.fs-wiwi.de/index.php/de/faq");
 		connection.ignoreContentType(true);
-		// connection.parser(Parser.xmlParser());
 		result += "Loading faqs...\n";
 
 		try {
@@ -51,7 +50,6 @@ public class FaqLoader {
 					if (!url.startsWith("http://")) {
 						url = "http://neu.fs-wiwi.de" + url;
 					}
-					result += url;
 					Connection subConnection = Jsoup.connect(url);
 					subConnection.ignoreContentType(true);
 					Document subDoc = subConnection.get();
