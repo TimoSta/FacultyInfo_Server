@@ -4,8 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,17 +75,40 @@ public class JDBCConnection {
 	}
 
 	public int executeStatement(String sql) {
-		return executeStatement(sql, new ArrayList<String>());
+		return executeStatement(sql, null);
 	}
 
-	public int executeStatement(String sql, List<String> attributes) {
+	public int executeStatement(String sql, AttributeContainer attributes) {
 		Connection connection = null;
 		try {
 			connection = getConnection();
 			PreparedStatement statement = connection.prepareStatement(sql);
-			int argumentNumber = 1;
-			for (String attribute : attributes) {
-				statement.setString(argumentNumber++, attribute);
+			if (attributes != null) {
+				if (attributes.getStringAttributes() != null) {
+					Iterator<Entry<Integer, String>> iter = attributes
+							.getStringAttributes().entrySet().iterator();
+					while (iter.hasNext()) {
+						Entry<Integer, String> entry = iter.next();
+						statement.setString(entry.getKey(), entry.getValue());
+					}
+				}
+				if (attributes.getDateTimeAttributes() != null) {
+					Iterator<Entry<Integer, Timestamp>> iter = attributes
+							.getDateTimeAttributes().entrySet().iterator();
+					while (iter.hasNext()) {
+						Entry<Integer, Timestamp> entry = iter.next();
+						statement
+								.setTimestamp(entry.getKey(), entry.getValue());
+					}
+				}
+				if (attributes.getTimeAttributes() != null) {
+					Iterator<Entry<Integer, Time>> iter = attributes
+							.getTimeAttributes().entrySet().iterator();
+					while (iter.hasNext()) {
+						Entry<Integer, Time> entry = iter.next();
+						statement.setTime(entry.getKey(), entry.getValue());
+					}
+				}
 			}
 			return statement.executeUpdate();
 		} catch (NamingException e) {

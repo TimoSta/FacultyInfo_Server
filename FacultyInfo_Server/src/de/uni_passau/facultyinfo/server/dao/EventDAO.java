@@ -2,10 +2,10 @@ package de.uni_passau.facultyinfo.server.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uni_passau.facultyinfo.server.dao.connection.AttributeContainer;
 import de.uni_passau.facultyinfo.server.dao.connection.JDBCConnection;
 import de.uni_passau.facultyinfo.server.dto.Event;
 
@@ -47,17 +47,16 @@ public class EventDAO {
 	}
 
 	public boolean createEvent(Event event) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-d H:m:s");
-		ArrayList<String> attributes = new ArrayList<String>();
-		attributes.add(event.getId());
-		attributes.add(event.getTitle());
-		attributes.add(event.getSubtitle());
-		attributes.add(event.getLocation());
-		attributes.add(event.getDescription());
-		attributes.add(sdf.format(event.getStartDate()));
-		attributes.add(sdf.format(event.getEndDate()));
-		attributes.add(event.getHost());
-		attributes.add(event.getUrl());
+		AttributeContainer attributes = new AttributeContainer();
+		attributes.addString(1, event.getId());
+		attributes.addString(2, event.getTitle());
+		attributes.addString(3, event.getSubtitle());
+		attributes.addString(4, event.getLocation());
+		attributes.addString(5, event.getDescription());
+		attributes.addDateTime(6, event.getStartDate());
+		attributes.addDateTime(7, event.getEndDate());
+		attributes.addString(8, event.getHost());
+		attributes.addString(9, event.getUrl());
 		return JDBCConnection
 				.getInstance()
 				.executeStatement(

@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uni_passau.facultyinfo.server.dao.connection.AttributeContainer;
 import de.uni_passau.facultyinfo.server.dao.connection.JDBCConnection;
 import de.uni_passau.facultyinfo.server.dto.Faq;
 import de.uni_passau.facultyinfo.server.dto.FaqCategory;
@@ -62,20 +63,20 @@ public class FaqDAO {
 	}
 
 	public boolean createFaqCategory(FaqCategory faqCategory) {
-		ArrayList<String> attributes = new ArrayList<String>();
-		attributes.add(faqCategory.getId());
-		attributes.add(faqCategory.getTitle());
+		AttributeContainer attributes = new AttributeContainer();
+		attributes.addString(1, faqCategory.getId());
+		attributes.addString(2, faqCategory.getTitle());
 		return JDBCConnection.getInstance().executeStatement(
 				"INSERT INTO faqcategories (id, title) VALUES (?, ?)",
 				attributes) == 1;
 	}
 
 	public boolean createFaq(Faq faq) {
-		ArrayList<String> attributes = new ArrayList<String>();
-		attributes.add(faq.getId());
-		attributes.add(faq.getCategory().getId());
-		attributes.add(faq.getTitle());
-		attributes.add(faq.getText());
+		AttributeContainer attributes = new AttributeContainer();
+		attributes.addString(1, faq.getId());
+		attributes.addString(2, faq.getCategory().getId());
+		attributes.addString(3, faq.getTitle());
+		attributes.addString(4, faq.getText());
 		return JDBCConnection
 				.getInstance()
 				.executeStatement(

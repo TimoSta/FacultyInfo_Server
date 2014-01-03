@@ -2,10 +2,10 @@ package de.uni_passau.facultyinfo.server.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uni_passau.facultyinfo.server.dao.connection.AttributeContainer;
 import de.uni_passau.facultyinfo.server.dao.connection.JDBCConnection;
 import de.uni_passau.facultyinfo.server.dto.News;
 
@@ -47,14 +47,13 @@ public class NewsDAO {
 	}
 
 	public boolean createNews(News news) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-d H:m:s");
-		ArrayList<String> attributes = new ArrayList<String>();
-		attributes.add(news.getId());
-		attributes.add(news.getTitle());
-		attributes.add(news.getDescription());
-		attributes.add(news.getUrl());
-		attributes.add(news.getText());
-		attributes.add(sdf.format(news.getPublicationDate()));
+		AttributeContainer attributes = new AttributeContainer();
+		attributes.addString(1, news.getId());
+		attributes.addString(2, news.getTitle());
+		attributes.addString(3, news.getDescription());
+		attributes.addString(4, news.getUrl());
+		attributes.addString(5, news.getText());
+		attributes.addDateTime(6, news.getPublicationDate());
 		return JDBCConnection
 				.getInstance()
 				.executeStatement(
