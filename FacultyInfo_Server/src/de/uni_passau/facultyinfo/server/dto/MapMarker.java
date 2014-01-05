@@ -2,6 +2,7 @@ package de.uni_passau.facultyinfo.server.dto;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MapMarker {
@@ -9,15 +10,18 @@ public class MapMarker {
 	public static final int TYPE_CITY = 2;
 
 	private String id;
+	private String name;
 	private String description;
-	private float latitude;
-	private float longitude;
+	private double latitude;
+	private double longitude;
+	@XmlTransient
 	private MapMarkerCategory category;
 
-	public MapMarker(String id, String description, float latitude,
-			float longitude, MapMarkerCategory category) {
+	public MapMarker(String id, String name, String description,
+			double latitude, double longitude, MapMarkerCategory category) {
 		super();
 		this.id = id;
+		this.name = name;
 		this.description = description;
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -32,6 +36,14 @@ public class MapMarker {
 		this.id = id;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -40,19 +52,19 @@ public class MapMarker {
 		this.description = description;
 	}
 
-	public float getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(float latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 
-	public float getLongitude() {
+	public double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(float longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 

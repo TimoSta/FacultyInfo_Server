@@ -48,15 +48,15 @@ public class EventDAO {
 
 	public boolean createEvent(Event event) {
 		AttributeContainer attributes = new AttributeContainer();
-		attributes.addString(1, event.getId());
-		attributes.addString(2, event.getTitle());
-		attributes.addString(3, event.getSubtitle());
-		attributes.addString(4, event.getLocation());
-		attributes.addString(5, event.getDescription());
-		attributes.addDateTime(6, event.getStartDate());
-		attributes.addDateTime(7, event.getEndDate());
-		attributes.addString(8, event.getHost());
-		attributes.addString(9, event.getUrl());
+		attributes.add(1, event.getId());
+		attributes.add(2, event.getTitle());
+		attributes.add(3, event.getSubtitle());
+		attributes.add(4, event.getLocation());
+		attributes.add(5, event.getDescription());
+		attributes.add(6, event.getStartDate());
+		attributes.add(7, event.getEndDate());
+		attributes.add(8, event.getHost());
+		attributes.add(9, event.getUrl());
 		return JDBCConnection
 				.getInstance()
 				.executeStatement(

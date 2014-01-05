@@ -32,10 +32,10 @@ public class BusLineDAO {
 
 	public boolean createBusLine(BusLine busLine) {
 		AttributeContainer attributes = new AttributeContainer();
-		attributes.addString(1, busLine.getId());
-		attributes.addString(2, busLine.getLine());
-		attributes.addString(3, busLine.getDirection());
-		attributes.addDateTime(4, busLine.getDeparture());
+		attributes.add(1, busLine.getId());
+		attributes.add(2, busLine.getLine());
+		attributes.add(3, busLine.getDirection());
+		attributes.add(4, busLine.getDeparture());
 		return JDBCConnection
 				.getInstance()
 				.executeStatement(

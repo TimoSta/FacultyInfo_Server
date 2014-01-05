@@ -64,8 +64,8 @@ public class FaqDAO {
 
 	public boolean createFaqCategory(FaqCategory faqCategory) {
 		AttributeContainer attributes = new AttributeContainer();
-		attributes.addString(1, faqCategory.getId());
-		attributes.addString(2, faqCategory.getTitle());
+		attributes.add(1, faqCategory.getId());
+		attributes.add(2, faqCategory.getTitle());
 		return JDBCConnection.getInstance().executeStatement(
 				"INSERT INTO faqcategories (id, title) VALUES (?, ?)",
 				attributes) == 1;
@@ -73,10 +73,10 @@ public class FaqDAO {
 
 	public boolean createFaq(Faq faq) {
 		AttributeContainer attributes = new AttributeContainer();
-		attributes.addString(1, faq.getId());
-		attributes.addString(2, faq.getCategory().getId());
-		attributes.addString(3, faq.getTitle());
-		attributes.addString(4, faq.getText());
+		attributes.add(1, faq.getId());
+		attributes.add(2, faq.getCategory().getId());
+		attributes.add(3, faq.getTitle());
+		attributes.add(4, faq.getText());
 		return JDBCConnection
 				.getInstance()
 				.executeStatement(

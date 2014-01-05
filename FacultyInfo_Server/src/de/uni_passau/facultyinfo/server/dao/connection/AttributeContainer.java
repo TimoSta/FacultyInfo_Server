@@ -8,6 +8,7 @@ public class AttributeContainer {
 	private HashMap<Integer, String> stringContainer = null;
 	private HashMap<Integer, Timestamp> dateTimeContainer = null;
 	private HashMap<Integer, Time> timeContainer = null;
+	private HashMap<Integer, Double> doubleContainer = null;
 
 	private HashMap<Integer, String> getStringContainer() {
 		if (stringContainer == null) {
@@ -30,18 +31,30 @@ public class AttributeContainer {
 		return timeContainer;
 	}
 
-	public AttributeContainer addString(Integer position, String value) {
+	private HashMap<Integer, Double> getDoubleContainer() {
+		if (doubleContainer == null) {
+			doubleContainer = new HashMap<>();
+		}
+		return doubleContainer;
+	}
+
+	public AttributeContainer add(Integer position, String value) {
 		getStringContainer().put(position, value);
 		return this;
 	}
 
-	public AttributeContainer addDateTime(Integer position, java.util.Date value) {
+	public AttributeContainer add(Integer position, java.util.Date value) {
 		getDateTimeContainer().put(position, new Timestamp(value.getTime()));
 		return this;
 	}
 
-	public AttributeContainer addTime(Integer position, Time value) {
+	public AttributeContainer add(Integer position, Time value) {
 		getTimeContainer().put(position, value);
+		return this;
+	}
+
+	public AttributeContainer add(Integer position, Double value) {
+		getDoubleContainer().put(position, value);
 		return this;
 	}
 
@@ -55,6 +68,10 @@ public class AttributeContainer {
 
 	protected HashMap<Integer, Time> getTimeAttributes() {
 		return timeContainer;
+	}
+
+	protected HashMap<Integer, Double> getDoubleAttributes() {
+		return doubleContainer;
 	}
 
 }

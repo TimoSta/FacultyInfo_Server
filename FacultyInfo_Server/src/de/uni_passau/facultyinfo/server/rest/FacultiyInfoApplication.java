@@ -12,6 +12,7 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import de.uni_passau.facultyinfo.server.rest.ressource.BusLineRessource;
 import de.uni_passau.facultyinfo.server.rest.ressource.EventRessource;
 import de.uni_passau.facultyinfo.server.rest.ressource.FaqRessource;
+import de.uni_passau.facultyinfo.server.rest.ressource.MapMarkerRessource;
 import de.uni_passau.facultyinfo.server.rest.ressource.NewsRessource;
 
 @ApplicationPath("/")
@@ -23,6 +24,7 @@ public class FacultiyInfoApplication extends Application {
 		classes.add(FaqRessource.class);
 		classes.add(EventRessource.class);
 		classes.add(BusLineRessource.class);
+		classes.add(MapMarkerRessource.class);
 		return classes;
 	}
 

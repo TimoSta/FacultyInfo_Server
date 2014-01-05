@@ -48,12 +48,12 @@ public class NewsDAO {
 
 	public boolean createNews(News news) {
 		AttributeContainer attributes = new AttributeContainer();
-		attributes.addString(1, news.getId());
-		attributes.addString(2, news.getTitle());
-		attributes.addString(3, news.getDescription());
-		attributes.addString(4, news.getUrl());
-		attributes.addString(5, news.getText());
-		attributes.addDateTime(6, news.getPublicationDate());
+		attributes.add(1, news.getId());
+		attributes.add(2, news.getTitle());
+		attributes.add(3, news.getDescription());
+		attributes.add(4, news.getUrl());
+		attributes.add(5, news.getText());
+		attributes.add(6, news.getPublicationDate());
 		return JDBCConnection
 				.getInstance()
 				.executeStatement(
