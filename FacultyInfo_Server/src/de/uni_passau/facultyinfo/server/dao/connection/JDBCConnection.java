@@ -117,6 +117,14 @@ public class JDBCConnection {
 						statement.setDouble(entry.getKey(), entry.getValue());
 					}
 				}
+				if (attributes.getIntegerAttributes() != null) {
+					Iterator<Entry<Integer, Integer>> iter = attributes
+							.getIntegerAttributes().entrySet().iterator();
+					while (iter.hasNext()) {
+						Entry<Integer, Integer> entry = iter.next();
+						statement.setInt(entry.getKey(), entry.getValue());
+					}
+				}
 			}
 			return statement.executeUpdate();
 		} catch (NamingException e) {
