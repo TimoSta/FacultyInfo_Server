@@ -28,7 +28,7 @@ public class SportsCourseDAO {
 				ResultSet sportsCourseResultSet = JDBCConnection
 						.getInstance()
 						.executeSelect(
-								"SELECT id, details, number, dayofweek FROM sportscourses WHERE category = ?",
+								"SELECT id, category, number, details, dayofweek, starttime, endtime, location, startdate, enddate, host, price, status FROM sportscourses WHERE category = ?",
 								attributes);
 				if (sportsCourseResultSet == null) {
 					continue;
@@ -117,10 +117,15 @@ public class SportsCourseDAO {
 		while (resultSet.next()) {
 			SportsCourse sportsCourse = new SportsCourse(
 					resultSet.getString("id"), sportsCourseCategory,
-					resultSet.getString("number"), resultSet.getString("details"),
-					resultSet.getInt("dayofweek"), null, null, null, null,
-					null, null, SportsCourse.PRICE_NOT_AVAILABLE,
-					SportsCourse.STATUS_NOT_AVAILABLE);
+					resultSet.getString("number"),
+					resultSet.getString("details"),
+					resultSet.getInt("dayofweek"),
+					resultSet.getTime("starttime"),
+					resultSet.getTime("endTime"),
+					resultSet.getString("location"),
+					resultSet.getDate("startdate"),
+					resultSet.getDate("enddate"), resultSet.getString("host"),
+					resultSet.getDouble("price"), resultSet.getInt("status"));
 			sportsCourses.add(sportsCourse);
 		}
 		return sportsCourses;

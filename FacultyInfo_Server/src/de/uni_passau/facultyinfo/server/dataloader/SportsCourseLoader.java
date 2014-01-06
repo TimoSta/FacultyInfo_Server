@@ -75,10 +75,14 @@ public class SportsCourseLoader {
 
 					// Day of Week
 					String[] dayOfWeekStrings = sportsCourseElement
-							.select("td.bs_stag").get(0).text().split(" ");
+							.select("td.bs_stag").get(0).html().split("<br />");
 					ArrayList<ArrayList<Integer>> daysOfWeek = new ArrayList<ArrayList<Integer>>();
 					for (String dayOfWeekString : dayOfWeekStrings) {
-						daysOfWeek.add(parseDaysOfWeekString(dayOfWeekString));
+						dayOfWeekString = Jsoup.parse(dayOfWeekString).text();
+						if (!dayOfWeekString.isEmpty()) {
+							daysOfWeek
+									.add(parseDaysOfWeekString(dayOfWeekString));
+						}
 					}
 
 					// Time
@@ -87,12 +91,16 @@ public class SportsCourseLoader {
 					if (!sportsCourseElement.select("td.bs_szeit").get(0)
 							.text().isEmpty()) {
 						String[] timeStrings = sportsCourseElement
-								.select("td.bs_szeit").get(0).text().split(" ");
+								.select("td.bs_szeit").get(0).html()
+								.split("<br />");
 
-						for (String string : timeStrings) {
-							String[] subStrings = string.split("-");
-							startTimes.add(parseTime(subStrings[0]));
-							endTimes.add(parseTime(subStrings[1]));
+						for (String timeString : timeStrings) {
+							timeString = Jsoup.parse(timeString).text();
+							if (!timeString.isEmpty()) {
+								String[] subStrings = timeString.split("-");
+								startTimes.add(parseTime(subStrings[0]));
+								endTimes.add(parseTime(subStrings[1]));
+							}
 						}
 					}
 
@@ -101,9 +109,13 @@ public class SportsCourseLoader {
 					if (!sportsCourseElement.select("td.bs_sort").get(0).text()
 							.isEmpty()) {
 						String[] locationStrings = sportsCourseElement
-								.select("td.bs_sort").get(0).text().split(" ");
+								.select("td.bs_sort").get(0).html()
+								.split("<br />");
 						for (String location : locationStrings) {
-							locations.add(location);
+							location = Jsoup.parse(location).text();
+							if (!location.isEmpty()) {
+								locations.add(location);
+							}
 						}
 					}
 
@@ -190,7 +202,7 @@ public class SportsCourseLoader {
 						for (Integer dayOfWeek : subDaysOfWeek) {
 							// Id
 							String id = UUID.randomUUID().toString();
-							
+
 							SportsCourse sportsCourse = new SportsCourse(id,
 									category, number, details, dayOfWeek,
 									startTime, endTime, location, startDate,
