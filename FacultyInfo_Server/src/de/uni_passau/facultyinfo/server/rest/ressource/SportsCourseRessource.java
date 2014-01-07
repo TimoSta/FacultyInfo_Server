@@ -22,10 +22,24 @@ public class SportsCourseRessource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<SportsCourseCategory> getSportsCourses() {
 		SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
-		return sportsCourseDAO.getSportsCourses();
+		return sportsCourseDAO.getSportsCourseCategories();
 	}
 
-	@Path("/{id}")
+	@Path("/category/{id}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public SportsCourseCategory getSportsCourseCategory(
+			@PathParam("id") String id) {
+		SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
+		SportsCourseCategory sportsCourseCategory = sportsCourseDAO
+				.getSportsCourseCategory(id);
+		if (sportsCourseCategory == null) {
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
+		return sportsCourseCategory;
+	}
+
+	@Path("/course/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public SportsCourse getSportsCourse(@PathParam("id") String id) {
@@ -35,6 +49,27 @@ public class SportsCourseRessource {
 			throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
 		return sportsCourse;
+	}
+
+	@Path("/find/{searchString}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<SportsCourseCategory> findSportsCourses(
+			@PathParam("searchString") String searchString) {
+		SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
+		List<SportsCourseCategory> sportsCourseCategories = sportsCourseDAO
+				.findSportsCourseCategories(searchString);
+		return sportsCourseCategories;
+	}
+
+	@Path("/today")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<SportsCourseCategory> getTodaysSportsCourses() {
+		SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
+		List<SportsCourseCategory> sportsCourseCategories = sportsCourseDAO
+				.getTodaysSportsCourses();
+		return sportsCourseCategories;
 	}
 
 	@Path("/load")
