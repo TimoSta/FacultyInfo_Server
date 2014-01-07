@@ -1,5 +1,7 @@
 package de.uni_passau.facultyinfo.server.dto;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
@@ -8,6 +10,8 @@ public class ContactGroup {
 	private String id;
 	private String title;
 	private String description;
+
+	private List<ContactPerson> contactPersons;
 
 	public ContactGroup(String id, String title, String description) {
 		super();
@@ -40,4 +44,11 @@ public class ContactGroup {
 		this.description = description;
 	}
 
+	public List<ContactPerson> getContactPersons() {
+		return contactPersons;
+	}
+
+	public void setContactPersons(List<ContactPerson> contactPersons) {
+		this.contactPersons = contactPersons;
+	}
 }

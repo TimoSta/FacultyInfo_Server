@@ -10,6 +10,7 @@ import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
 import de.uni_passau.facultyinfo.server.rest.ressource.BusLineRessource;
+import de.uni_passau.facultyinfo.server.rest.ressource.ContactPersonRessource;
 import de.uni_passau.facultyinfo.server.rest.ressource.EventRessource;
 import de.uni_passau.facultyinfo.server.rest.ressource.FaqRessource;
 import de.uni_passau.facultyinfo.server.rest.ressource.MapMarkerRessource;
@@ -27,6 +28,7 @@ public class FacultiyInfoApplication extends Application {
 		classes.add(BusLineRessource.class);
 		classes.add(MapMarkerRessource.class);
 		classes.add(SportsCourseRessource.class);
+		classes.add(ContactPersonRessource.class);
 		return classes;
 	}
 
