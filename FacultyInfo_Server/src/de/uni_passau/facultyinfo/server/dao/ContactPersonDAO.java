@@ -13,8 +13,10 @@ import de.uni_passau.facultyinfo.server.dto.ContactPerson;
 public class ContactPersonDAO {
 
 	public List<ContactGroup> getContactGroups() {
-		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
-				"SELECT id, title, description FROM contactgroups");
+		ResultSet resultSet = JDBCConnection
+				.getInstance()
+				.executeSelect(
+						"SELECT id, title, description FROM contactgroups ORDER BY title");
 		if (resultSet == null) {
 			return null;
 		}
@@ -48,8 +50,11 @@ public class ContactPersonDAO {
 	public ContactGroup getContactGroup(String id) {
 		ArrayList<String> attributes = new ArrayList<String>();
 		attributes.add(id);
-		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
-				"SELECT id, title, description FROM contactgroups WHERE id = ?", attributes);
+		ResultSet resultSet = JDBCConnection
+				.getInstance()
+				.executeSelect(
+						"SELECT id, title, description FROM contactgroups WHERE id = ?",
+						attributes);
 		if (resultSet == null) {
 			return null;
 		}
@@ -100,6 +105,16 @@ public class ContactPersonDAO {
 						attributes) == 1;
 	}
 
+	public void deleteAllContactGroups() {
+		JDBCConnection.getInstance().executeStatement(
+				"DELETE FROM contactgroups");
+	}
+
+	public void deleteAllContactPersons() {
+		JDBCConnection.getInstance().executeStatement(
+				"DELETE FROM contactpersons");
+	}
+
 	private ArrayList<ContactGroup> mapResultSetToContactGroups(
 			ResultSet resultSet) throws SQLException {
 		ArrayList<ContactGroup> contactGroups = new ArrayList<ContactGroup>();
@@ -136,24 +151,4 @@ public class ContactPersonDAO {
 		}
 		return contactPersons;
 	}
-
-	// private Faq mapResultSetToFaq(ResultSet resultSet) throws SQLException {
-	// if (resultSet.next()) {
-	// Faq faq = new Faq(resultSet.getString("id"), null,
-	// resultSet.getString("title"), resultSet.getString("text"));
-	// return faq;
-	// }
-	// return null;
-	// }
-
-	public void deleteAllContactGroups() {
-		JDBCConnection.getInstance().executeStatement(
-				"DELETE FROM contactgroups");
-	}
-
-	public void deleteAllContactPersons() {
-		JDBCConnection.getInstance().executeStatement(
-				"DELETE FROM contactpersons");
-	}
-
 }

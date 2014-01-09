@@ -12,8 +12,10 @@ import de.uni_passau.facultyinfo.server.dto.Event;
 public class EventDAO {
 
 	public List<Event> getEvents() {
-		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
-				"SELECT id, title, startdate, enddate, host FROM events");
+		ResultSet resultSet = JDBCConnection
+				.getInstance()
+				.executeSelect(
+						"SELECT id, title, startdate, enddate, host FROM events ORDER BY startdate, title");
 		if (resultSet == null) {
 			return null;
 		}
@@ -64,6 +66,10 @@ public class EventDAO {
 						attributes) == 1;
 	}
 
+	public void deleteAllEvents() {
+		JDBCConnection.getInstance().executeStatement("DELETE FROM events");
+	}
+
 	private ArrayList<Event> mapResultSetToEvents(ResultSet resultSet)
 			throws SQLException {
 		ArrayList<Event> events = new ArrayList<Event>();
@@ -71,8 +77,8 @@ public class EventDAO {
 			Event event = new Event(resultSet.getString("id"),
 					resultSet.getString("title"), null, null, null,
 					resultSet.getTimestamp("startdate"),
-					resultSet.getTimestamp("enddate"), resultSet.getString("host"),
-					null);
+					resultSet.getTimestamp("enddate"),
+					resultSet.getString("host"), null);
 			events.add(event);
 		}
 
@@ -87,15 +93,10 @@ public class EventDAO {
 					resultSet.getString("location"),
 					resultSet.getString("description"),
 					resultSet.getTimestamp("startdate"),
-					resultSet.getTimestamp("enddate"), resultSet.getString("host"),
-					resultSet.getString("url"));
+					resultSet.getTimestamp("enddate"),
+					resultSet.getString("host"), resultSet.getString("url"));
 			return event;
 		}
 		return null;
 	}
-
-	public void deleteAllEvents() {
-		JDBCConnection.getInstance().executeStatement("DELETE FROM events");
-	}
-
 }

@@ -12,8 +12,10 @@ import de.uni_passau.facultyinfo.server.dto.News;
 public class NewsDAO {
 
 	public List<News> getNewsList() {
-		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
-				"SELECT id, title, description, publishingdate FROM news");
+		ResultSet resultSet = JDBCConnection
+				.getInstance()
+				.executeSelect(
+						"SELECT id, title, description, publishingdate FROM news ORDER BY publishingdate, title");
 		if (resultSet == null) {
 			return null;
 		}
@@ -61,6 +63,10 @@ public class NewsDAO {
 						attributes) == 1;
 	}
 
+	public void deleteAllNews() {
+		JDBCConnection.getInstance().executeStatement("DELETE FROM news");
+	}
+
 	private ArrayList<News> mapResultSetToNewsList(ResultSet resultSet)
 			throws SQLException {
 		ArrayList<News> newsList = new ArrayList<News>();
@@ -86,9 +92,4 @@ public class NewsDAO {
 		}
 		return null;
 	}
-
-	public void deleteAllNews() {
-		JDBCConnection.getInstance().executeStatement("DELETE FROM news");
-	}
-
 }

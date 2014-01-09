@@ -17,7 +17,7 @@ public class BusLineDAO {
 		ResultSet resultSet = JDBCConnection
 				.getInstance()
 				.executeSelect(
-						"SELECT id, line, direction, departure FROM buslines WHERE departure BETWEEN NOW() AND (NOW() + INTERVAL 1 DAY)");
+						"SELECT id, line, direction, departure FROM buslines WHERE departure BETWEEN NOW() AND (NOW() + INTERVAL 1 DAY) ORDER BY departure, line, direction");
 		if (resultSet == null) {
 			return null;
 		}
@@ -43,6 +43,10 @@ public class BusLineDAO {
 						attributes) == 1;
 	}
 
+	public void deleteAllBusLines() {
+		JDBCConnection.getInstance().executeStatement("DELETE FROM buslines");
+	}
+
 	private ArrayList<BusLine> mapResultSetToBusLines(ResultSet resultSet)
 			throws SQLException {
 		ArrayList<BusLine> busLines = new ArrayList<BusLine>();
@@ -59,9 +63,5 @@ public class BusLineDAO {
 		}
 
 		return busLines;
-	}
-
-	public void deleteAllBusLines() {
-		JDBCConnection.getInstance().executeStatement("DELETE FROM buslines");
 	}
 }

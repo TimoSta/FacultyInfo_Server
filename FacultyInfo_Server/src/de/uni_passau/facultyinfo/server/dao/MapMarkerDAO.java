@@ -17,7 +17,7 @@ public class MapMarkerDAO {
 
 	public List<MapMarkerCategory> getMapMarkerList() {
 		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
-				"SELECT id, title, supercategory FROM mapmarkercategories");
+				"SELECT id, title, supercategory FROM mapmarkercategories ORDER BY title");
 		if (resultSet == null) {
 			return null;
 		}
@@ -45,29 +45,6 @@ public class MapMarkerDAO {
 			return null;
 		}
 	}
-
-	// private void loadMapMarkers(List<MapMarkerCategory> mapMarkerCategories)
-	// throws SQLException {
-	// if (!(mapMarkerCategories == null) && !mapMarkerCategories.isEmpty()) {
-	// for (MapMarkerCategory mapMarkerCategory : mapMarkerCategories) {
-	// loadMapMarkers(mapMarkerCategory.getMapMarkerCategories());
-	//
-	// ArrayList<String> attributes = new ArrayList<String>();
-	// attributes.add(mapMarkerCategory.getId());
-	// ResultSet mapMarkerResultSet = JDBCConnection
-	// .getInstance()
-	// .executeSelect(
-	// "SELECT id, name, description, latitude, longitude, category FROM mapmarkers WHERE category = ?",
-	// attributes);
-	// if (mapMarkerResultSet == null) {
-	// continue;
-	// }
-	//
-	// mapMarkerCategory.setMapMarkers(mapResultSetToMapMarkers(
-	// mapMarkerResultSet, mapMarkerCategory));
-	// }
-	// }
-	// }
 
 	public boolean createMapMarkerCategory(MapMarkerCategory mapMarkerCategory) {
 		AttributeContainer attributes = new AttributeContainer();

@@ -14,7 +14,7 @@ public class FaqDAO {
 
 	public List<FaqCategory> getFaqList() {
 		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
-				"SELECT id, title FROM faqcategories");
+				"SELECT id, title FROM faqcategories ORDER BY title");
 		if (resultSet == null) {
 			return null;
 		}
@@ -28,7 +28,7 @@ public class FaqDAO {
 				ResultSet faqResultSet = JDBCConnection
 						.getInstance()
 						.executeSelect(
-								"SELECT id, title FROM faqs WHERE category = ?",
+								"SELECT id, title FROM faqs WHERE category = ? ORDER BY title",
 								attributes);
 				if (faqResultSet == null) {
 					continue;
@@ -84,6 +84,15 @@ public class FaqDAO {
 						attributes) == 1;
 	}
 
+	public void deleteAllFaqCategories() {
+		JDBCConnection.getInstance().executeStatement(
+				"DELETE FROM faqcategories");
+	}
+
+	public void deleteAllFaqs() {
+		JDBCConnection.getInstance().executeStatement("DELETE FROM faqs");
+	}
+
 	private ArrayList<FaqCategory> mapResultSetToFaqCategories(
 			ResultSet resultSet) throws SQLException {
 		ArrayList<FaqCategory> faqCategories = new ArrayList<FaqCategory>();
@@ -115,14 +124,4 @@ public class FaqDAO {
 		}
 		return null;
 	}
-
-	public void deleteAllFaqCategories() {
-		JDBCConnection.getInstance().executeStatement(
-				"DELETE FROM faqcategories");
-	}
-
-	public void deleteAllFaqs() {
-		JDBCConnection.getInstance().executeStatement("DELETE FROM faqs");
-	}
-
 }
