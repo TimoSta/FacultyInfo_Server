@@ -20,12 +20,12 @@ public class SportsCourseRessource {
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<SportsCourseCategory> getSportsCourses() {
+	public List<SportsCourseCategory> getSportsCourseCategories() {
 		SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
 		return sportsCourseDAO.getSportsCourseCategories();
 	}
 
-	@Path("/category/{id}")
+	@Path("/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public SportsCourseCategory getSportsCourseCategory(
@@ -33,6 +33,30 @@ public class SportsCourseRessource {
 		SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
 		SportsCourseCategory sportsCourseCategory = sportsCourseDAO
 				.getSportsCourseCategory(id);
+		if (sportsCourseCategory == null) {
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
+		return sportsCourseCategory;
+	}
+
+	@Path("/today")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<SportsCourseCategory> getSportsCourseCategoriesToday() {
+		SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
+		List<SportsCourseCategory> sportsCourseCategories = sportsCourseDAO
+				.getSportsCourseCategoriesToday();
+		return sportsCourseCategories;
+	}
+
+	@Path("/today/{id}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public SportsCourseCategory getSportsCourseCategoryToday(
+			@PathParam("id") String id) {
+		SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
+		SportsCourseCategory sportsCourseCategory = sportsCourseDAO
+				.getSportsCourseCategoryToday(id);
 		if (sportsCourseCategory == null) {
 			throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
@@ -59,16 +83,6 @@ public class SportsCourseRessource {
 		SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
 		List<SportsCourseCategory> sportsCourseCategories = sportsCourseDAO
 				.findSportsCourseCategories(searchString);
-		return sportsCourseCategories;
-	}
-
-	@Path("/today")
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<SportsCourseCategory> getTodaysSportsCourses() {
-		SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
-		List<SportsCourseCategory> sportsCourseCategories = sportsCourseDAO
-				.getTodaysSportsCourses();
 		return sportsCourseCategories;
 	}
 

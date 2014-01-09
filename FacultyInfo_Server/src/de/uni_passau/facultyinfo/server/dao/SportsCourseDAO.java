@@ -60,6 +60,87 @@ public class SportsCourseDAO {
 		}
 	}
 
+	public List<SportsCourseCategory> getSportsCourseCategoriesToday() {
+		List<SportsCourseCategory> sportsCourseCategories = getFullSportsCourseCategories();
+		List<SportsCourseCategory> todaysSportsCourseCategories = new ArrayList<SportsCourseCategory>();
+		Date today = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(today);
+		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1;
+		for (SportsCourseCategory sportsCourseCategory : sportsCourseCategories) {
+			boolean hasSportsCourseToday = false;
+			for (SportsCourse sportsCourse : sportsCourseCategory
+					.getSportsCourses()) {
+				sportsCourse.setCategory(null);
+				if ((sportsCourse.getStartDate() == null || sportsCourse
+						.getStartDate().before(today))
+						&& (sportsCourse.getEndDate() == null || sportsCourse
+								.getEndDate().after(today))
+						&& sportsCourse.getDayOfWeek() == dayOfWeek) {
+					hasSportsCourseToday = true;
+					break;
+				}
+			}
+			if (hasSportsCourseToday) {
+				sportsCourseCategory.setSportsCourses(null);
+				todaysSportsCourseCategories.add(sportsCourseCategory);
+			}
+		}
+
+		return Collections.unmodifiableList(todaysSportsCourseCategories);
+	}
+
+	public SportsCourseCategory getSportsCourseCategoryToday(String categoryId) {
+		ArrayList<String> attributes = new ArrayList<String>();
+		attributes.add(categoryId);
+		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
+				"SELECT id, title FROM sportscoursecategories WHERE id = ?",
+				attributes);
+		if (resultSet == null) {
+			return null;
+		}
+
+		try {
+			SportsCourseCategory sportsCourseCategory = mapResultSetToSportsCourseCategory(resultSet);
+
+			ResultSet sportsCourseResultSet = JDBCConnection
+					.getInstance()
+					.executeSelect(
+							"SELECT id, category, number, details, dayofweek, starttime, endtime, location, startdate, enddate, host, price, status FROM sportscourses WHERE category = ? ORDER BY details, dayofweek, starttime",
+							attributes);
+
+			Date today = new Date();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1;
+
+			List<SportsCourse> allSportsCourses = mapResultSetToSportsCourses(
+					sportsCourseResultSet, sportsCourseCategory);
+
+			List<SportsCourse> todaysSportsCourses = new ArrayList<SportsCourse>();
+			for (SportsCourse sportsCourse : allSportsCourses) {
+				sportsCourse.setCategory(null);
+				if ((sportsCourse.getStartDate() == null || sportsCourse
+						.getStartDate().before(today))
+						&& (sportsCourse.getEndDate() == null || sportsCourse
+								.getEndDate().after(today))
+						&& sportsCourse.getDayOfWeek() == dayOfWeek) {
+					todaysSportsCourses.add(sportsCourse);
+					sportsCourse.setCategory(sportsCourseCategory);
+				}
+			}
+			if (!todaysSportsCourses.isEmpty()) {
+				sportsCourseCategory.setSportsCourses(Collections
+						.unmodifiableList(todaysSportsCourses));
+			}
+
+			return sportsCourseCategory;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	public SportsCourse getSportsCourse(String id) {
 		ArrayList<String> attributes = new ArrayList<String>();
 		attributes.add(id);
@@ -130,37 +211,6 @@ public class SportsCourseDAO {
 	public void deleteAllSportsCourses() {
 		JDBCConnection.getInstance().executeStatement(
 				"DELETE FROM sportscourses");
-	}
-
-	public List<SportsCourseCategory> getTodaysSportsCourses() {
-		List<SportsCourseCategory> sportsCourseCategories = getFullSportsCourseCategories();
-		List<SportsCourseCategory> todaysSportsCourseCategories = new ArrayList<SportsCourseCategory>();
-		Date today = new Date();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(today);
-		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1;
-		for (SportsCourseCategory sportsCourseCategory : sportsCourseCategories) {
-			List<SportsCourse> todaysSportsCourses = new ArrayList<SportsCourse>();
-			for (SportsCourse sportsCourse : sportsCourseCategory
-					.getSportsCourses()) {
-				sportsCourse.setCategory(null);
-				if ((sportsCourse.getStartDate() == null || sportsCourse
-						.getStartDate().before(today))
-						&& (sportsCourse.getEndDate() == null || sportsCourse
-								.getEndDate().after(today))
-						&& sportsCourse.getDayOfWeek() == dayOfWeek) {
-					todaysSportsCourses.add(sportsCourse);
-					sportsCourse.setCategory(sportsCourseCategory);
-				}
-			}
-			if (!todaysSportsCourses.isEmpty()) {
-				sportsCourseCategory.setSportsCourses(Collections
-						.unmodifiableList(todaysSportsCourses));
-				todaysSportsCourseCategories.add(sportsCourseCategory);
-			}
-		}
-
-		return Collections.unmodifiableList(todaysSportsCourseCategories);
 	}
 
 	public boolean createSportsCourseCategory(
