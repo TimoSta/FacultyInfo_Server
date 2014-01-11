@@ -36,6 +36,17 @@ public class ContactPersonRessource {
 		return contactGroup;
 	}
 
+	@Path("/find/{searchString}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ContactGroup> findContactGroups(
+			@PathParam("searchString") String searchString) {
+		ContactPersonDAO contactPersonDAO = new ContactPersonDAO();
+		List<ContactGroup> contactGroups = contactPersonDAO
+				.findContactGroups(searchString);
+		return contactGroups;
+	}
+
 	@Path("/load")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
