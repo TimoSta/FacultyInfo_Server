@@ -16,8 +16,10 @@ import de.uni_passau.facultyinfo.server.dto.MapMarkerCategory;
 public class MapMarkerDAO {
 
 	public List<MapMarkerCategory> getMapMarkerList() {
-		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
-				"SELECT id, title, supercategory FROM mapmarkercategories ORDER BY title");
+		ResultSet resultSet = JDBCConnection
+				.getInstance()
+				.executeSelect(
+						"SELECT id, title, supercategory FROM mapmarkercategories ORDER BY title");
 		if (resultSet == null) {
 			return null;
 		}
@@ -117,8 +119,8 @@ public class MapMarkerDAO {
 					}
 				}
 
-				ArrayList<String> attributes = new ArrayList<String>();
-				attributes.add(mapMarkerCategory.getId());
+				AttributeContainer attributes = new AttributeContainer();
+				attributes.add(1, mapMarkerCategory.getId());
 				ResultSet mapMarkerResultSet = JDBCConnection
 						.getInstance()
 						.executeSelect(

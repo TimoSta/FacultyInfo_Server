@@ -33,8 +33,8 @@ public class SportsCourseDAO {
 	}
 
 	public SportsCourseCategory getSportsCourseCategory(String id) {
-		ArrayList<String> attributes = new ArrayList<String>();
-		attributes.add(id);
+		AttributeContainer attributes = new AttributeContainer();
+		attributes.add(1, id);
 		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
 				"SELECT id, title FROM sportscoursecategories WHERE id = ?",
 				attributes);
@@ -91,8 +91,8 @@ public class SportsCourseDAO {
 	}
 
 	public SportsCourseCategory getSportsCourseCategoryToday(String categoryId) {
-		ArrayList<String> attributes = new ArrayList<String>();
-		attributes.add(categoryId);
+		AttributeContainer attributes = new AttributeContainer();
+		attributes.add(1, categoryId);
 		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
 				"SELECT id, title FROM sportscoursecategories WHERE id = ?",
 				attributes);
@@ -142,8 +142,8 @@ public class SportsCourseDAO {
 	}
 
 	public SportsCourse getSportsCourse(String id) {
-		ArrayList<String> attributes = new ArrayList<String>();
-		attributes.add(id);
+		AttributeContainer attributes = new AttributeContainer();
+		attributes.add(1, id);
 		ResultSet resultSet = JDBCConnection
 				.getInstance()
 				.executeSelect(
@@ -256,8 +256,8 @@ public class SportsCourseDAO {
 			ArrayList<SportsCourseCategory> sportsCourseCategories = mapResultSetToSportsCourseCategories(resultSet);
 
 			for (SportsCourseCategory sportsCourseCategory : sportsCourseCategories) {
-				ArrayList<String> attributes = new ArrayList<String>();
-				attributes.add(sportsCourseCategory.getId());
+				AttributeContainer attributes = new AttributeContainer();
+				attributes.add(1, sportsCourseCategory.getId());
 				ResultSet sportsCourseResultSet = JDBCConnection
 						.getInstance()
 						.executeSelect(

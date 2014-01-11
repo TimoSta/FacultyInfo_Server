@@ -45,17 +45,56 @@ public class JDBCConnection {
 	}
 
 	public ResultSet executeSelect(String sql) {
-		return executeSelect(sql, new ArrayList<String>());
+		return executeSelect(sql, null);
 	}
 
-	public ResultSet executeSelect(String sql, List<String> attributes) {
+	public ResultSet executeSelect(String sql, AttributeContainer attributes) {
 		Connection connection = null;
 		try {
 			connection = getConnection();
 			PreparedStatement statement = connection.prepareStatement(sql);
-			int argumentNumber = 1;
-			for (String attribute : attributes) {
-				statement.setString(argumentNumber++, attribute);
+			if (attributes != null) {
+				if (attributes.getStringAttributes() != null) {
+					Iterator<Entry<Integer, String>> iter = attributes
+							.getStringAttributes().entrySet().iterator();
+					while (iter.hasNext()) {
+						Entry<Integer, String> entry = iter.next();
+						statement.setString(entry.getKey(), entry.getValue());
+					}
+				}
+				if (attributes.getDateTimeAttributes() != null) {
+					Iterator<Entry<Integer, Timestamp>> iter = attributes
+							.getDateTimeAttributes().entrySet().iterator();
+					while (iter.hasNext()) {
+						Entry<Integer, Timestamp> entry = iter.next();
+						statement
+								.setTimestamp(entry.getKey(), entry.getValue());
+					}
+				}
+				if (attributes.getTimeAttributes() != null) {
+					Iterator<Entry<Integer, Time>> iter = attributes
+							.getTimeAttributes().entrySet().iterator();
+					while (iter.hasNext()) {
+						Entry<Integer, Time> entry = iter.next();
+						statement.setTime(entry.getKey(), entry.getValue());
+					}
+				}
+				if (attributes.getDoubleAttributes() != null) {
+					Iterator<Entry<Integer, Double>> iter = attributes
+							.getDoubleAttributes().entrySet().iterator();
+					while (iter.hasNext()) {
+						Entry<Integer, Double> entry = iter.next();
+						statement.setDouble(entry.getKey(), entry.getValue());
+					}
+				}
+				if (attributes.getIntegerAttributes() != null) {
+					Iterator<Entry<Integer, Integer>> iter = attributes
+							.getIntegerAttributes().entrySet().iterator();
+					while (iter.hasNext()) {
+						Entry<Integer, Integer> entry = iter.next();
+						statement.setInt(entry.getKey(), entry.getValue());
+					}
+				}
 			}
 			ResultSet resultSet = statement.executeQuery();
 			return resultSet;

@@ -23,8 +23,8 @@ public class FaqDAO {
 			ArrayList<FaqCategory> faqCategories = mapResultSetToFaqCategories(resultSet);
 
 			for (FaqCategory faqCategory : faqCategories) {
-				ArrayList<String> attributes = new ArrayList<String>();
-				attributes.add(faqCategory.getId());
+				AttributeContainer attributes = new AttributeContainer();
+				attributes.add(1, faqCategory.getId());
 				ResultSet faqResultSet = JDBCConnection
 						.getInstance()
 						.executeSelect(
@@ -46,8 +46,8 @@ public class FaqDAO {
 	}
 
 	public Faq getFaq(String id) {
-		ArrayList<String> attributes = new ArrayList<String>();
-		attributes.add(id);
+		AttributeContainer attributes = new AttributeContainer();
+		attributes.add(1, id);
 		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
 				"SELECT id, title, text FROM faqs WHERE id = ?", attributes);
 		if (resultSet == null) {

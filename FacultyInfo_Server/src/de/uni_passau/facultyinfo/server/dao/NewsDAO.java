@@ -29,8 +29,8 @@ public class NewsDAO {
 	}
 
 	public News getNews(String id) {
-		ArrayList<String> attributes = new ArrayList<String>();
-		attributes.add(id);
+		AttributeContainer attributes = new AttributeContainer();
+		attributes.add(1, id);
 		ResultSet resultSet = JDBCConnection
 				.getInstance()
 				.executeSelect(
