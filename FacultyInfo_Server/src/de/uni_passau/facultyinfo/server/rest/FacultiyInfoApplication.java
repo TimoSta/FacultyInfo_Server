@@ -15,6 +15,7 @@ import de.uni_passau.facultyinfo.server.rest.ressource.ContactPersonRessource;
 import de.uni_passau.facultyinfo.server.rest.ressource.EventRessource;
 import de.uni_passau.facultyinfo.server.rest.ressource.FaqRessource;
 import de.uni_passau.facultyinfo.server.rest.ressource.MapMarkerRessource;
+import de.uni_passau.facultyinfo.server.rest.ressource.MenuRessource;
 import de.uni_passau.facultyinfo.server.rest.ressource.NewsRessource;
 import de.uni_passau.facultyinfo.server.rest.ressource.SportsCourseRessource;
 
@@ -31,6 +32,7 @@ public class FacultiyInfoApplication extends Application {
 		classes.add(SportsCourseRessource.class);
 		classes.add(ContactPersonRessource.class);
 		classes.add(BusinessHoursRessource.class);
+		classes.add(MenuRessource.class);
 		return classes;
 	}
 

@@ -7,22 +7,25 @@ import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MenuItem {
+	public static final int TYPE_NOT_AVAILABLE = 0;
 	public static final int TYPE_SOUP = 1;
 	public static final int TYPE_APPETIZER = 2;
 	public static final int TYPE_MAIN = 3;
 	public static final int TYPE_DESSERT = 4;
+	
+	public static final double PRICE_NOT_AVAILABLE = -1.0;
 
 	private String id;
 	private Date day;
 	private String name;
 	private int type;
 	private int attributes;
-	private float priceStudent;
-	private float priceEmployee;
-	private float priceExternal;
+	private double priceStudent;
+	private double priceEmployee;
+	private double priceExternal;
 
 	public MenuItem(String id, Date day, String name, int type, int attributes,
-			float priceStudent, float priceEmployee, float priceExternal) {
+			double priceStudent, double priceEmployee, double priceExternal) {
 		super();
 		this.id = id;
 		this.day = day;
@@ -74,27 +77,27 @@ public class MenuItem {
 		this.attributes = attributes;
 	}
 
-	public float getPriceStudent() {
+	public double getPriceStudent() {
 		return priceStudent;
 	}
 
-	public void setPriceStudent(float priceStudent) {
+	public void setPriceStudent(double priceStudent) {
 		this.priceStudent = priceStudent;
 	}
 
-	public float getPriceEmployee() {
+	public double getPriceEmployee() {
 		return priceEmployee;
 	}
 
-	public void setPriceEmployee(float priceEmployee) {
+	public void setPriceEmployee(double priceEmployee) {
 		this.priceEmployee = priceEmployee;
 	}
 
-	public float getPriceExternal() {
+	public double getPriceExternal() {
 		return priceExternal;
 	}
 
-	public void setPriceExternal(float priceExternal) {
+	public void setPriceExternal(double priceExternal) {
 		this.priceExternal = priceExternal;
 	}
 
