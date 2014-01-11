@@ -15,7 +15,7 @@ public class NewsDAO {
 		ResultSet resultSet = JDBCConnection
 				.getInstance()
 				.executeSelect(
-						"SELECT id, title, description, publishingdate FROM news ORDER BY publishingdate, title");
+						"SELECT id, title, description, publishingdate FROM news ORDER BY publishingdate DESC, title");
 		if (resultSet == null) {
 			return null;
 		}
