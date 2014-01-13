@@ -62,6 +62,8 @@ public class SportsCourseLoader {
 				Elements sportsCourseElements = subDocument
 						.select("table.bs_kurse tbody tr");
 				for (Element sportsCourseElement : sportsCourseElements) {
+					System.out.println(sportsCourseElement.select("td.bs_sknr")
+							.get(0).text());
 					// Details
 					String details = sportsCourseElement.select("td.bs_sdet")
 							.get(0).text();
@@ -192,6 +194,11 @@ public class SportsCourseLoader {
 
 					// Create Sports Course
 					int index = 0;
+					if (daysOfWeek.isEmpty()) {
+						ArrayList<Integer> dummyList = new ArrayList<Integer>();
+						dummyList.add(SportsCourse.DATE_NOT_AVAILABLE);
+						daysOfWeek.add(dummyList);
+					}
 					for (ArrayList<Integer> subDaysOfWeek : daysOfWeek) {
 						Time startTime = startTimes.size() >= index + 1 ? startTimes
 								.get(index) : null;
@@ -244,21 +251,21 @@ public class SportsCourseLoader {
 	}
 
 	private int parseDayOfWeek(String dayOfWeekString) {
-		int dayOfWeek = 0;
+		int dayOfWeek = SportsCourse.DATE_NOT_AVAILABLE;
 		if (dayOfWeekString.equals("Mo")) {
-			dayOfWeek = 1;
+			dayOfWeek = SportsCourse.MONDAY;
 		} else if (dayOfWeekString.equals("Di")) {
-			dayOfWeek = 2;
+			dayOfWeek = SportsCourse.TUESDAY;
 		} else if (dayOfWeekString.equals("Mi")) {
-			dayOfWeek = 3;
+			dayOfWeek = SportsCourse.WEDNESDAY;
 		} else if (dayOfWeekString.equals("Do")) {
-			dayOfWeek = 4;
+			dayOfWeek = SportsCourse.THURSDAY;
 		} else if (dayOfWeekString.equals("Fr")) {
-			dayOfWeek = 5;
+			dayOfWeek = SportsCourse.FRIDAY;
 		} else if (dayOfWeekString.equals("Sa")) {
-			dayOfWeek = 6;
+			dayOfWeek = SportsCourse.SATURDAY;
 		} else if (dayOfWeekString.equals("So")) {
-			dayOfWeek = 7;
+			dayOfWeek = SportsCourse.SUNDAY;
 		}
 		return dayOfWeek;
 	}

@@ -36,18 +36,21 @@ public class NewsLoader {
 			for (Element element : newsElements) {
 				String id = UUID.randomUUID().toString();
 				String title = element.select("title").get(0).text();
-				String description = element.select("description").get(0)
-						.text();
+				// String description = element.select("description").get(0)
+				// .text();
 				String url = element.select("link").get(0).text();
-				System.out.println(url);
 				SimpleDateFormat sdf = new SimpleDateFormat(
 						"E, d MMM yyyy H:m:s Z", Locale.ENGLISH);
 				Element textElement = Jsoup.connect(url).get()
 						.select("table.contentpaneopen").get(1).select("td")
 						.get(0);
 				textElement.select("table").get(0).html("");
-				String text = textElement.text();
-				System.out.println(text);
+				String text = Jsoup.parse(
+						textElement.html().replace("<br>", "\n")
+								.replace("<br />", "\n")).text();
+				String description = text.length() >= 200 ? text.substring(0,
+						199) + "..." : text;
+
 				Date publicationDate = sdf.parse(element.select("pubDate")
 						.get(0).text());
 
