@@ -36,6 +36,15 @@ public class EventRessource {
 		return event;
 	}
 
+	@Path("/find/{searchString}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Event> find(@PathParam("searchString") String searchString) {
+		EventDAO eventDAO = new EventDAO();
+		List<Event> events = eventDAO.find(searchString);
+		return events;
+	}
+
 	@Path("/load")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)

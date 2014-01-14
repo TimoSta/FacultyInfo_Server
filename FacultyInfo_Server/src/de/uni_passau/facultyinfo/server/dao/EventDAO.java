@@ -3,7 +3,9 @@ package de.uni_passau.facultyinfo.server.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import de.uni_passau.facultyinfo.server.dao.connection.AttributeContainer;
 import de.uni_passau.facultyinfo.server.dao.connection.JDBCConnection;
@@ -15,7 +17,7 @@ public class EventDAO {
 		ResultSet resultSet = JDBCConnection
 				.getInstance()
 				.executeSelect(
-						"SELECT id, title, startdate, enddate, host FROM events ORDER BY startdate, title");
+						"SELECT id, title, startdate, enddate, host FROM events WHERE startdate >= NOW() ORDER BY startdate, title ");
 		if (resultSet == null) {
 			return null;
 		}
@@ -46,6 +48,33 @@ public class EventDAO {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public List<Event> find(String searchString) {
+		ArrayList<Event> searchResults = new ArrayList<Event>();
+
+		if (searchString != null && !searchString.isEmpty()) {
+
+			List<Event> events = getEvents();
+			Pattern pattern = Pattern.compile(searchString,
+					Pattern.CASE_INSENSITIVE + Pattern.LITERAL);
+
+			for (Event event : events) {
+				if ((event.getTitle() != null && pattern.matcher(
+						event.getTitle()).find())
+						|| (event.getSubtitle() != null && pattern.matcher(
+								event.getSubtitle()).find())
+						|| (event.getDescription() != null && pattern.matcher(
+								event.getDescription()).find())
+						|| (event.getHost() != null && pattern.matcher(
+								event.getHost()).find())
+						|| (event.getLocation() != null && pattern.matcher(
+								event.getLocation()).find())) {
+					searchResults.add(event);
+				}
+			}
+		}
+		return Collections.unmodifiableList(searchResults);
 	}
 
 	public boolean createEvent(Event event) {
