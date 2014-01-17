@@ -91,7 +91,7 @@ public class MenuLoader {
 
 					String id = UUID.randomUUID().toString();
 
-					String name = element.select("td.cell1").get(0).text()
+					String name = element.select("td.cell1").get(0).text().replaceAll("\\(.*?\\)","")
 							.trim();
 					String[] priceStrings = element.select("td.cell3").get(0)
 							.text().trim().split(" / ");
