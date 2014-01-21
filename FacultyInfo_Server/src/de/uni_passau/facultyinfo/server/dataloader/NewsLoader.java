@@ -73,7 +73,7 @@ public class NewsLoader {
 
 				text = Jsoup
 						.parse(s.toString().replaceAll("\\\\n", "[newline]"))
-						.text().replace("[newline]", "\n").trim();
+						.text().replace("[newline]", "\n").trim() + " ";
 
 				String description = text.length() >= 200 ? text.substring(0,
 						199) + "..." : text;

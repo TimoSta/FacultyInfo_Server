@@ -89,7 +89,7 @@ public class FaqLoader {
 					content = Jsoup
 							.parse(s.toString()
 									.replaceAll("\\\\n", "[newline]")).text()
-							.replace("[newline]", "\n").trim();
+							.replace("[newline]", "\n").trim() + " ";
 
 					Faq faq = new Faq(faqId, faqCategory, faqTitle, content);
 					result += " -- " + faq.getTitle();
