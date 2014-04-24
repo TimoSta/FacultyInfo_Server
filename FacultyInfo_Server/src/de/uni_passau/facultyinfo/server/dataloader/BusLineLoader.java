@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.TimeZone;
 import java.util.UUID;
 
 import org.jsoup.Connection;
@@ -48,7 +47,6 @@ public class BusLineLoader {
 		result += "Loading buslines...\n";
 
 		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
 		cal.setTime(new Date());
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
@@ -76,7 +74,6 @@ public class BusLineLoader {
 			params.put("date",
 					(new SimpleDateFormat("d.MM.yyyy")).format(current));
 			params.put("time", (new SimpleDateFormat("H:m")).format(current));
-
 			Connection connection = Jsoup.connect(buildQueryURL());
 			connection.ignoreContentType(true);
 			try {
@@ -86,7 +83,6 @@ public class BusLineLoader {
 
 					List<Element> rows = resultElement.select("tr").subList(2,
 							resultElement.select("tr").size() - 1);
-
 					SimpleDateFormat hourFormat = new SimpleDateFormat("H");
 					for (Element element : rows) {
 						if (!element.attr("class").equals("current")) {
@@ -99,14 +95,13 @@ public class BusLineLoader {
 								String[] timeStrings = element
 										.select("td.time").get(0).text()
 										.split(":");
-								GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("Europe/Berlin"));
+								GregorianCalendar calendar = new GregorianCalendar();
 								calendar.setTime(current);
 								calendar.set(Calendar.HOUR_OF_DAY,
 										Integer.parseInt(timeStrings[0]));
 								calendar.set(Calendar.MINUTE,
 										Integer.parseInt(timeStrings[1]));
 								Date departure = calendar.getTime();
-
 								if (hourFormat.format(current).equals(
 										hourFormat.format(departure))) {
 
@@ -138,5 +133,5 @@ public class BusLineLoader {
 
 		return result;
 	}
-	
+
 }
