@@ -28,10 +28,10 @@ public class MenuLoader {
 	public String load() {
 		String result = "";
 
-		 result += "Deleting from Table menuitems";
-		 menuDAO.deleteAllMenuItems();
-		 result += " -- done\n";
-		 result += "Loading menu items...\n";
+		result += "Deleting from Table menuitems";
+		menuDAO.deleteAllMenuItems();
+		result += " -- done\n";
+		result += "Loading menu items...\n";
 
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
@@ -43,11 +43,11 @@ public class MenuLoader {
 		Date current = cal.getTime();
 
 		result += processWeek(current, "dw");
-		
+
 		cal.setTime(current);
 		cal.add(Calendar.DAY_OF_WEEK, 7);
 		current = cal.getTime();
-		
+
 		result += processWeek(current, "nw");
 
 		return result;
@@ -61,17 +61,17 @@ public class MenuLoader {
 			try {
 				Document document = Jsoup.connect(URL).data("func", "make_spl")
 						.data("locId", "UNI-P").data("lang", "de")
-						.data("w", weekString).data("date", sdf.format(currentDate))
-						.post();
+						.data("w", weekString)
+						.data("date", sdf.format(currentDate)).post();
 
 				Elements rowsRaw = document.select("table.speiseplan tbody tr");
-				System.out.println(rowsRaw.size());
 				int currentType = MenuItem.TYPE_NOT_AVAILABLE;
 				List<Element> rows = rowsRaw.subList(1, rowsRaw.size());
-				System.out.println(rows.size());
 				for (Element element : rows) {
-					String firstLineText = element.select("td.cell1").get(0).text();
-					if(firstLineText.equals("Geschlossen") || firstLineText.equals("keine Daten vorhanden")) {
+					String firstLineText = element.select("td.cell1").get(0)
+							.text();
+					if (firstLineText.equals("Geschlossen")
+							|| firstLineText.equals("keine Daten vorhanden")) {
 						break;
 					}
 					Elements typeElement = element.select("td.cell0");
@@ -92,7 +92,7 @@ public class MenuLoader {
 
 					String id = UUID.randomUUID().toString();
 
-					String name = firstLineText.replaceAll("\\(.*?\\)","")
+					String name = firstLineText.replaceAll("\\(.*?\\)", "")
 							.trim();
 					String[] priceStrings = element.select("td.cell3").get(0)
 							.text().trim().split(" / ");
@@ -110,8 +110,6 @@ public class MenuLoader {
 						priceExternal = format.parse(priceStrings[2])
 								.doubleValue();
 					} catch (ParseException e) {
-						System.out.println("a");
-						System.out.println(e.getMessage());
 						e.printStackTrace();
 					}
 
@@ -132,12 +130,9 @@ public class MenuLoader {
 				cal.add(Calendar.DAY_OF_WEEK, 1);
 				currentDate = cal.getTime();
 			} catch (IOException e) {
-				System.out.println("b");
-				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}
 		}
 		return result;
 	}
-
 }
