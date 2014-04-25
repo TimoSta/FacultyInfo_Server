@@ -70,7 +70,8 @@ public class MenuLoader {
 				List<Element> rows = rowsRaw.subList(1, rowsRaw.size());
 				System.out.println(rows.size());
 				for (Element element : rows) {
-					if(element.select("td.cell1").get(0).text().equals("Geschlossen")) {
+					String firstLineText = element.select("td.cell1").get(0).text();
+					if(firstLineText.equals("Geschlossen") || firstLineText.equals("keine Daten vorhanden")) {
 						break;
 					}
 					Elements typeElement = element.select("td.cell0");
@@ -91,7 +92,7 @@ public class MenuLoader {
 
 					String id = UUID.randomUUID().toString();
 
-					String name = element.select("td.cell1").get(0).text().replaceAll("\\(.*?\\)","")
+					String name = firstLineText.replaceAll("\\(.*?\\)","")
 							.trim();
 					String[] priceStrings = element.select("td.cell3").get(0)
 							.text().trim().split(" / ");
@@ -109,6 +110,8 @@ public class MenuLoader {
 						priceExternal = format.parse(priceStrings[2])
 								.doubleValue();
 					} catch (ParseException e) {
+						System.out.println("a");
+						System.out.println(e.getMessage());
 						e.printStackTrace();
 					}
 
@@ -129,6 +132,8 @@ public class MenuLoader {
 				cal.add(Calendar.DAY_OF_WEEK, 1);
 				currentDate = cal.getTime();
 			} catch (IOException e) {
+				System.out.println("b");
+				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}
 		}
