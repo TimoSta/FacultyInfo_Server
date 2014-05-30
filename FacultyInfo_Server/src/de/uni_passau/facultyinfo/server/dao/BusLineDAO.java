@@ -14,10 +14,17 @@ import de.uni_passau.facultyinfo.server.dto.BusLine;
 
 public class BusLineDAO {
 	public List<BusLine> getBusLines() {
-		ResultSet resultSet = JDBCConnection
-				.getInstance()
-				.executeSelect(
-						"SELECT id, line, direction, departure FROM buslines WHERE departure BETWEEN NOW() AND (NOW() + INTERVAL 1 DAY) ORDER BY departure, line, direction");
+		return getBusLines(null);
+	}
+
+	public List<BusLine> getBusLines(Integer limit) {
+		String query = "SELECT id, line, direction, departure FROM buslines WHERE departure BETWEEN NOW() AND (NOW() + INTERVAL 1 DAY) ORDER BY departure, line, direction";
+
+		if (limit != null) {
+			query += " LIMIT " + Integer.toString(limit);
+		}
+
+		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(query);
 		if (resultSet == null) {
 			return null;
 		}

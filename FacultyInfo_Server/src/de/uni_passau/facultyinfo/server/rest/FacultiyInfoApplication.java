@@ -12,6 +12,7 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import de.uni_passau.facultyinfo.server.rest.resource.BusLineResource;
 import de.uni_passau.facultyinfo.server.rest.resource.BusinessHoursResource;
 import de.uni_passau.facultyinfo.server.rest.resource.ContactPersonResource;
+import de.uni_passau.facultyinfo.server.rest.resource.DashboardResource;
 import de.uni_passau.facultyinfo.server.rest.resource.EventResource;
 import de.uni_passau.facultyinfo.server.rest.resource.FaqResource;
 import de.uni_passau.facultyinfo.server.rest.resource.MapMarkerResource;
@@ -24,6 +25,7 @@ public class FacultiyInfoApplication extends Application {
 	@Override
 	public Set<Class<?>> getClasses() {
 		final Set<Class<?>> classes = new HashSet<>();
+		classes.add(DashboardResource.class);
 		classes.add(NewsResource.class);
 		classes.add(FaqResource.class);
 		classes.add(EventResource.class);

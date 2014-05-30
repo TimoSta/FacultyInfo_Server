@@ -12,10 +12,17 @@ import de.uni_passau.facultyinfo.server.dto.News;
 public class NewsDAO {
 
 	public List<News> getNewsList() {
-		ResultSet resultSet = JDBCConnection
-				.getInstance()
-				.executeSelect(
-						"SELECT id, title, description, publishingdate FROM news ORDER BY publishingdate DESC, title");
+		return getNewsList(null);
+	}
+
+	public List<News> getNewsList(Integer limit) {
+		String query = "SELECT id, title, description, publishingdate FROM news ORDER BY publishingdate DESC, title";
+
+		if (limit != null) {
+			query += " LIMIT " + Integer.toString(limit);
+		}
+
+		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(query);
 		if (resultSet == null) {
 			return null;
 		}

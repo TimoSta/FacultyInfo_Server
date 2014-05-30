@@ -12,10 +12,41 @@ import de.uni_passau.facultyinfo.server.dto.MenuItem;
 public class MenuDAO {
 
 	public List<MenuItem> getMenuItems() {
-		ResultSet resultSet = JDBCConnection
-				.getInstance()
-				.executeSelect(
-						"SELECT id, day, name, type, attributes, pricestudent, priceemployee, priceexternal FROM menuitems ORDER BY day, type, name");
+		return getMenuItems(null, null);
+	}
+
+	public List<MenuItem> getMenuItems(Integer type, Boolean today) {
+		String query = "SELECT id, day, name, type, attributes, pricestudent, priceemployee, priceexternal FROM menuitems";
+		String orderBy = "day, type, name";
+
+		ArrayList<String> whereConditions = new ArrayList<String>();
+
+		if (type != null) {
+			String condition = "type = " + Integer.toString(type);
+			whereConditions.add(condition);
+		}
+
+		if (today != null) {
+			String condition = "day = CURDATE()";
+			whereConditions.add(condition);
+		}
+
+		if (!whereConditions.isEmpty()) {
+			StringBuilder builder = new StringBuilder();
+			boolean firstTime = true;
+			for (String condition : whereConditions) {
+				if (!firstTime) {
+					builder.append(" AND ");
+				}
+				builder.append(condition);
+				firstTime = false;
+			}
+			query += " WHERE " + builder.toString();
+		}
+		
+		query += " ORDER BY " + orderBy;
+		
+		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(query);
 		if (resultSet == null) {
 			return null;
 		}
