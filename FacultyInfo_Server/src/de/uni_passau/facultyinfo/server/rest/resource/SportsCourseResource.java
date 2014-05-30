@@ -1,4 +1,4 @@
-package de.uni_passau.facultyinfo.server.rest.ressource;
+package de.uni_passau.facultyinfo.server.rest.resource;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import de.uni_passau.facultyinfo.server.dto.SportsCourse;
 import de.uni_passau.facultyinfo.server.dto.SportsCourseCategory;
 
 @Path("/sportscourse")
-public class SportsCourseRessource {
+public class SportsCourseResource {
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)

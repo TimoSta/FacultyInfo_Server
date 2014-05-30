@@ -1,4 +1,4 @@
-package de.uni_passau.facultyinfo.server.rest.ressource;
+package de.uni_passau.facultyinfo.server.rest.resource;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import de.uni_passau.facultyinfo.server.dataloader.BusLineLoader;
 import de.uni_passau.facultyinfo.server.dto.BusLine;
 
 @Path("/busline")
-public class BusLineRessource {
+public class BusLineResource {
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)

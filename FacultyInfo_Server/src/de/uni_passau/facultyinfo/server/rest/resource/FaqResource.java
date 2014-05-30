@@ -1,4 +1,4 @@
-package de.uni_passau.facultyinfo.server.rest.ressource;
+package de.uni_passau.facultyinfo.server.rest.resource;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import de.uni_passau.facultyinfo.server.dto.Faq;
 import de.uni_passau.facultyinfo.server.dto.FaqCategory;
 
 @Path("/faq")
-public class FaqRessource {
+public class FaqResource {
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)

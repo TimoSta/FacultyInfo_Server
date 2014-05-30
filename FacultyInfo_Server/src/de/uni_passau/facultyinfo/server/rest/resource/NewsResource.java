@@ -1,4 +1,4 @@
-package de.uni_passau.facultyinfo.server.rest.ressource;
+package de.uni_passau.facultyinfo.server.rest.resource;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import de.uni_passau.facultyinfo.server.dataloader.NewsLoader;
 import de.uni_passau.facultyinfo.server.dto.News;
 
 @Path("/news")
-public class NewsRessource {
+public class NewsResource {
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)

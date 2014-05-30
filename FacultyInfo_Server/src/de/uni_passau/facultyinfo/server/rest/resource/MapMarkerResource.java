@@ -1,4 +1,4 @@
-package de.uni_passau.facultyinfo.server.rest.ressource;
+package de.uni_passau.facultyinfo.server.rest.resource;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import de.uni_passau.facultyinfo.server.dataloader.MapMarkerLoader;
 import de.uni_passau.facultyinfo.server.dto.MapMarkerCategory;
 
 @Path("/mapmarker")
-public class MapMarkerRessource {
+public class MapMarkerResource {
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)

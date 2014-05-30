@@ -9,30 +9,30 @@ import javax.ws.rs.core.Application;
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
-import de.uni_passau.facultyinfo.server.rest.ressource.BusLineRessource;
-import de.uni_passau.facultyinfo.server.rest.ressource.BusinessHoursRessource;
-import de.uni_passau.facultyinfo.server.rest.ressource.ContactPersonRessource;
-import de.uni_passau.facultyinfo.server.rest.ressource.EventRessource;
-import de.uni_passau.facultyinfo.server.rest.ressource.FaqRessource;
-import de.uni_passau.facultyinfo.server.rest.ressource.MapMarkerRessource;
-import de.uni_passau.facultyinfo.server.rest.ressource.MenuRessource;
-import de.uni_passau.facultyinfo.server.rest.ressource.NewsRessource;
-import de.uni_passau.facultyinfo.server.rest.ressource.SportsCourseRessource;
+import de.uni_passau.facultyinfo.server.rest.resource.BusLineResource;
+import de.uni_passau.facultyinfo.server.rest.resource.BusinessHoursResource;
+import de.uni_passau.facultyinfo.server.rest.resource.ContactPersonResource;
+import de.uni_passau.facultyinfo.server.rest.resource.EventResource;
+import de.uni_passau.facultyinfo.server.rest.resource.FaqResource;
+import de.uni_passau.facultyinfo.server.rest.resource.MapMarkerResource;
+import de.uni_passau.facultyinfo.server.rest.resource.MenuResource;
+import de.uni_passau.facultyinfo.server.rest.resource.NewsResource;
+import de.uni_passau.facultyinfo.server.rest.resource.SportsCourseResource;
 
 @ApplicationPath("/")
 public class FacultiyInfoApplication extends Application {
 	@Override
 	public Set<Class<?>> getClasses() {
 		final Set<Class<?>> classes = new HashSet<>();
-		classes.add(NewsRessource.class);
-		classes.add(FaqRessource.class);
-		classes.add(EventRessource.class);
-		classes.add(BusLineRessource.class);
-		classes.add(MapMarkerRessource.class);
-		classes.add(SportsCourseRessource.class);
-		classes.add(ContactPersonRessource.class);
-		classes.add(BusinessHoursRessource.class);
-		classes.add(MenuRessource.class);
+		classes.add(NewsResource.class);
+		classes.add(FaqResource.class);
+		classes.add(EventResource.class);
+		classes.add(BusLineResource.class);
+		classes.add(MapMarkerResource.class);
+		classes.add(SportsCourseResource.class);
+		classes.add(ContactPersonResource.class);
+		classes.add(BusinessHoursResource.class);
+		classes.add(MenuResource.class);
 		return classes;
 	}
 
