@@ -100,8 +100,11 @@ public class SportsCourseLoader {
 							timeString = Jsoup.parse(timeString).text();
 							if (!timeString.isEmpty()) {
 								String[] subStrings = timeString.split("-");
-								startTimes.add(parseTime(subStrings[0]));
-								endTimes.add(parseTime(subStrings[1]));
+								startTimes
+										.add(subStrings.length > 0 ? parseTime(subStrings[0])
+												: null);
+								endTimes.add(subStrings.length > 1 ? parseTime(subStrings[1])
+										: null);
 							}
 						}
 					}
@@ -229,8 +232,6 @@ public class SportsCourseLoader {
 		} catch (IOException e) {
 			result += "error";
 			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
 		}
 		return result;
 	}
@@ -270,9 +271,14 @@ public class SportsCourseLoader {
 		return dayOfWeek;
 	}
 
-	private Time parseTime(String timeString) throws ParseException {
-		SimpleDateFormat timeSdf = new SimpleDateFormat("H:m");
-		Time time = new Time(timeSdf.parse(timeString).getTime());
-		return time;
+	private Time parseTime(String timeString) {
+		try {
+			SimpleDateFormat timeSdf = new SimpleDateFormat("H:m");
+			Time time = new Time(timeSdf.parse(timeString).getTime());
+			return time;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
