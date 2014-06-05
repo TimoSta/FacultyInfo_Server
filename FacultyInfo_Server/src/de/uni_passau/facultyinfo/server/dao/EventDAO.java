@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.uni_passau.facultyinfo.server.dao.connection.AttributeContainer;
@@ -30,13 +31,30 @@ public class EventDAO {
 		}
 	}
 
+	private List<Event> getEventsForSearch() {
+		ResultSet resultSet = JDBCConnection
+				.getInstance()
+				.executeSelect(
+						"SELECT id, title, subtitle, location, host, description FROM events WHERE startdate >= NOW() ORDER BY startdate, title ");
+		if (resultSet == null) {
+			return null;
+		}
+
+		try {
+			return mapResultSetToEventsForSearch(resultSet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	public Event getEvent(String id) {
 		AttributeContainer attributes = new AttributeContainer();
 		attributes.add(1, id);
 		ResultSet resultSet = JDBCConnection
 				.getInstance()
 				.executeSelect(
-						"SELECT id, title, subtitle, location, description, startdate, enddate, host, url FROM events WHERE id = ?",
+						"SELECT id, title, subtitle, location, description, host FROM events WHERE id = ?",
 						attributes);
 		if (resultSet == null) {
 			return null;
@@ -55,21 +73,72 @@ public class EventDAO {
 
 		if (searchString != null && !searchString.isEmpty()) {
 
-			List<Event> events = getEvents();
+			List<Event> events = getEventsForSearch();
 			Pattern pattern = Pattern.compile(searchString,
 					Pattern.CASE_INSENSITIVE + Pattern.LITERAL);
 
 			for (Event event : events) {
-				if ((event.getTitle() != null && pattern.matcher(
-						event.getTitle()).find())
-						|| (event.getSubtitle() != null && pattern.matcher(
-								event.getSubtitle()).find())
-						|| (event.getDescription() != null && pattern.matcher(
-								event.getDescription()).find())
-						|| (event.getHost() != null && pattern.matcher(
-								event.getHost()).find())
-						|| (event.getLocation() != null && pattern.matcher(
-								event.getLocation()).find())) {
+				boolean found = false;
+
+				if (event.getTitle() != null
+						&& pattern.matcher(event.getTitle()).find()) {
+					found = true;
+				}
+
+				if (event.getSubtitle() != null
+						&& pattern.matcher(event.getSubtitle()).find()) {
+					found = true;
+				} else {
+					event.setSubtitle(null);
+				}
+
+				if (event.getHost() != null
+						&& pattern.matcher(event.getHost()).find()) {
+					found = true;
+				} else {
+					event.setHost(null);
+				}
+
+				if (event.getLocation() != null
+						&& pattern.matcher(event.getLocation()).find()) {
+					found = true;
+				} else {
+					event.setLocation(null);
+				}
+
+				if (event.getDescription() != null) {
+					Matcher descriptionMatcher = pattern.matcher(event
+							.getDescription());
+					if (descriptionMatcher.find()) {
+						String fullDescription = event.getDescription();
+
+						boolean cropStart = descriptionMatcher.start() - 50 >= 0;
+						boolean cropEnd = descriptionMatcher.start()
+								+ descriptionMatcher.end() + 50 < fullDescription
+								.length();
+
+						String croppedDescription = fullDescription
+								.substring(
+										cropStart ? descriptionMatcher.start() - 50
+												: 0,
+										cropEnd ? descriptionMatcher.start()
+												+ descriptionMatcher.end() + 50
+												: fullDescription.length() - 1);
+
+						croppedDescription = (cropStart ? "..." : "")
+								+ croppedDescription + (cropEnd ? "..." : "");
+
+						event.setDescription(croppedDescription);
+
+						found = true;
+					} else {
+						event.setDescription(null);
+					}
+				}
+
+				if (found) {
+					event.setStartDate(null);
+
 					searchResults.add(event);
 				}
 			}
@@ -107,6 +176,22 @@ public class EventDAO {
 					resultSet.getString("title"), null, null, null,
 					resultSet.getTimestamp("startdate"),
 					resultSet.getTimestamp("enddate"),
+					resultSet.getString("host"), null);
+			events.add(event);
+		}
+
+		return events;
+	}
+
+	private ArrayList<Event> mapResultSetToEventsForSearch(ResultSet resultSet)
+			throws SQLException {
+		ArrayList<Event> events = new ArrayList<Event>();
+		while (resultSet.next()) {
+			Event event = new Event(resultSet.getString("id"),
+					resultSet.getString("title"),
+					resultSet.getString("subtitle"),
+					resultSet.getString("location"),
+					resultSet.getString("description"), null, null,
 					resultSet.getString("host"), null);
 			events.add(event);
 		}
