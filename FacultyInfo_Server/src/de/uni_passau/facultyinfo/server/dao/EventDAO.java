@@ -35,7 +35,7 @@ public class EventDAO {
 		ResultSet resultSet = JDBCConnection
 				.getInstance()
 				.executeSelect(
-						"SELECT id, title, subtitle, location, host, description FROM events WHERE startdate >= NOW() ORDER BY startdate, title ");
+						"SELECT id, title, startdate, subtitle, location, host, description FROM events WHERE startdate >= NOW() ORDER BY startdate, title ");
 		if (resultSet == null) {
 			return null;
 		}
@@ -137,8 +137,6 @@ public class EventDAO {
 				}
 
 				if (found) {
-					event.setStartDate(null);
-
 					searchResults.add(event);
 				}
 			}
@@ -191,7 +189,8 @@ public class EventDAO {
 					resultSet.getString("title"),
 					resultSet.getString("subtitle"),
 					resultSet.getString("location"),
-					resultSet.getString("description"), null, null,
+					resultSet.getString("description"),
+					resultSet.getTimestamp("startdate"), null,
 					resultSet.getString("host"), null);
 			events.add(event);
 		}
