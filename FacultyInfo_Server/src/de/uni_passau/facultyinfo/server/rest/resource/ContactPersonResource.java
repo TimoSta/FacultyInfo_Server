@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import de.uni_passau.facultyinfo.server.dao.ContactPersonDAO;
 import de.uni_passau.facultyinfo.server.dataloader.ContactPersonLoader;
 import de.uni_passau.facultyinfo.server.dto.ContactGroup;
+import de.uni_passau.facultyinfo.server.dto.ContactSearchResponse;
 
 @Path("/contactperson")
 public class ContactPersonResource {
@@ -39,12 +40,11 @@ public class ContactPersonResource {
 	@Path("/find/{searchString}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ContactGroup> findContactGroups(
+	public ContactSearchResponse find(
 			@PathParam("searchString") String searchString) {
 		ContactPersonDAO contactPersonDAO = new ContactPersonDAO();
-		List<ContactGroup> contactGroups = contactPersonDAO
-				.findContactGroups(searchString);
-		return contactGroups;
+		ContactSearchResponse response = contactPersonDAO.find(searchString);
+		return response;
 	}
 
 	@Path("/load")

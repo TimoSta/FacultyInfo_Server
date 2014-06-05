@@ -110,26 +110,7 @@ public class EventDAO {
 					Matcher descriptionMatcher = pattern.matcher(event
 							.getDescription());
 					if (descriptionMatcher.find()) {
-						String fullDescription = event.getDescription();
-
-						boolean cropStart = descriptionMatcher.start() - 50 >= 0;
-						boolean cropEnd = descriptionMatcher.start()
-								+ descriptionMatcher.end() + 50 < fullDescription
-								.length();
-
-						String croppedDescription = fullDescription
-								.substring(
-										cropStart ? descriptionMatcher.start() - 50
-												: 0,
-										cropEnd ? descriptionMatcher.start()
-												+ descriptionMatcher.end() + 50
-												: fullDescription.length() - 1);
-
-						croppedDescription = (cropStart ? "..." : "")
-								+ croppedDescription + (cropEnd ? "..." : "");
-
-						event.setDescription(croppedDescription);
-
+						event.setDescription(crop(event.getDescription(), descriptionMatcher.start(), descriptionMatcher.end()));
 						found = true;
 					} else {
 						event.setDescription(null);
@@ -211,5 +192,18 @@ public class EventDAO {
 			return event;
 		}
 		return null;
+	}
+
+	private String crop(String input, int start, int offset) {
+		boolean cropStart = start - 50 >= 0;
+		boolean cropEnd = start + offset + 50 < input.length();
+
+		String croppedInput = input.substring(cropStart ? start - 50 : 0,
+				cropEnd ? start + offset + 50 : input.length() - 1);
+
+		croppedInput = (cropStart ? "..." : "") + croppedInput
+				+ (cropEnd ? "..." : "");
+
+		return croppedInput;
 	}
 }
