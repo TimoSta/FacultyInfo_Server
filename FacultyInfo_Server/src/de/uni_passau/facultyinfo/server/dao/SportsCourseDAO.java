@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import de.uni_passau.facultyinfo.server.dao.connection.AttributeContainer;
 import de.uni_passau.facultyinfo.server.dao.connection.JDBCConnection;
+import de.uni_passau.facultyinfo.server.dto.SportsCourceSearchResponse;
 import de.uni_passau.facultyinfo.server.dto.SportsCourse;
 import de.uni_passau.facultyinfo.server.dto.SportsCourseCategory;
 
@@ -161,9 +162,54 @@ public class SportsCourseDAO {
 		}
 	}
 
-	public List<SportsCourseCategory> findSportsCourseCategories(
-			String searchString) {
-		ArrayList<SportsCourseCategory> searchResults = new ArrayList<SportsCourseCategory>();
+	// public List<SportsCourseCategory> findSportsCourseCategories(
+	// String searchString) {
+	// ArrayList<SportsCourseCategory> searchResults = new
+	// ArrayList<SportsCourseCategory>();
+	//
+	// if (searchString != null && !searchString.isEmpty()) {
+	//
+	// List<SportsCourseCategory> sportsCourseCategories =
+	// getFullSportsCourseCategories();
+	// Pattern pattern = Pattern.compile(searchString,
+	// Pattern.CASE_INSENSITIVE + Pattern.LITERAL);
+	//
+	// for (SportsCourseCategory sportsCourseCategory : sportsCourseCategories)
+	// {
+	// if (sportsCourseCategory.getTitle() != null
+	// && pattern.matcher(sportsCourseCategory.getTitle())
+	// .find()) {
+	// searchResults.add(sportsCourseCategory);
+	// } else {
+	// ArrayList<SportsCourse> matchingSportsCourses = new
+	// ArrayList<SportsCourse>();
+	// for (SportsCourse sportsCourse : sportsCourseCategory
+	// .getSportsCourses()) {
+	// sportsCourse.setCategory(null);
+	// if ((sportsCourse.getDetails() != null && pattern
+	// .matcher(sportsCourse.getDetails()).find())
+	// || (sportsCourse.getHost() != null && pattern
+	// .matcher(sportsCourse.getHost()).find())) {
+	// matchingSportsCourses.add(sportsCourse);
+	// sportsCourse.setCategory(sportsCourseCategory);
+	// }
+	// }
+	// if (!matchingSportsCourses.isEmpty()) {
+	// sportsCourseCategory.setSportsCourses(Collections
+	// .unmodifiableList(matchingSportsCourses));
+	// searchResults.add(sportsCourseCategory);
+	// }
+	// }
+	// }
+	//
+	// return Collections.unmodifiableList(searchResults);
+	// }
+	//
+	// return searchResults;
+	// }
+
+	public SportsCourceSearchResponse find(String searchString) {
+		SportsCourceSearchResponse response = new SportsCourceSearchResponse();
 
 		if (searchString != null && !searchString.isEmpty()) {
 
@@ -171,36 +217,56 @@ public class SportsCourseDAO {
 			Pattern pattern = Pattern.compile(searchString,
 					Pattern.CASE_INSENSITIVE + Pattern.LITERAL);
 
-			for (SportsCourseCategory sportsCourseCategory : sportsCourseCategories) {
-				if (sportsCourseCategory.getTitle() != null
-						&& pattern.matcher(sportsCourseCategory.getTitle())
-								.find()) {
-					searchResults.add(sportsCourseCategory);
-				} else {
-					ArrayList<SportsCourse> matchingSportsCourses = new ArrayList<SportsCourse>();
-					for (SportsCourse sportsCourse : sportsCourseCategory
-							.getSportsCourses()) {
-						sportsCourse.setCategory(null);
-						if ((sportsCourse.getDetails() != null && pattern
-								.matcher(sportsCourse.getDetails()).find())
-								|| (sportsCourse.getHost() != null && pattern
-										.matcher(sportsCourse.getHost()).find())) {
-							matchingSportsCourses.add(sportsCourse);
-							sportsCourse.setCategory(sportsCourseCategory);
-						}
+			for (SportsCourseCategory category : sportsCourseCategories) {
+				List<SportsCourse> courses = category.getSportsCourses();
+				if (category.getTitle() != null
+						&& pattern.matcher(category.getTitle()).find()) {
+					category.setSportsCourses(null);
+					response.add(category);
+				}
+
+				for (SportsCourse course : courses) {
+					course.setCategory(null);
+
+					boolean found = false;
+
+					if (course.getDetails() != null
+							&& pattern.matcher(course.getDetails()).find()) {
+						found = true;
 					}
-					if (!matchingSportsCourses.isEmpty()) {
-						sportsCourseCategory.setSportsCourses(Collections
-								.unmodifiableList(matchingSportsCourses));
-						searchResults.add(sportsCourseCategory);
+
+					if (course.getHost() != null
+							&& pattern.matcher(course.getHost()).find()) {
+						found = true;
+					} else {
+						course.setHost(null);
 					}
+
+					if (course.getLocation() != null
+							&& pattern.matcher(course.getLocation()).find()) {
+						found = true;
+					} else {
+						course.setLocation(null);
+					}
+
+					if (course.getNumber() != null
+							&& pattern.matcher(course.getNumber()).find()) {
+						found = true;
+					} else {
+						course.setNumber(null);
+					}
+
+					if (found) {
+						course.setCategoryTitle(category.getTitle());
+
+						response.add(course);
+					}
+
 				}
 			}
-
-			return Collections.unmodifiableList(searchResults);
 		}
 
-		return searchResults;
+		return response;
 	}
 
 	public void deleteAllSportsCourseCategories() {
@@ -261,14 +327,14 @@ public class SportsCourseDAO {
 				ResultSet sportsCourseResultSet = JDBCConnection
 						.getInstance()
 						.executeSelect(
-								"SELECT id, category, number, details, dayofweek, starttime, endtime, location, startdate, enddate, host, price, status FROM sportscourses WHERE category = ? ORDER BY details, dayofweek, starttime",
+								"SELECT id, number, details, location, host FROM sportscourses WHERE category = ? ORDER BY details, dayofweek, starttime",
 								attributes);
 				if (sportsCourseResultSet == null) {
 					continue;
 				}
 
 				sportsCourseCategory
-						.setSportsCourses(mapResultSetToSportsCourses(
+						.setSportsCourses(mapResultSetToSportsCoursesForSearch(
 								sportsCourseResultSet, sportsCourseCategory));
 			}
 
@@ -318,6 +384,25 @@ public class SportsCourseDAO {
 					resultSet.getDate("startdate"),
 					resultSet.getDate("enddate"), resultSet.getString("host"),
 					resultSet.getDouble("price"), resultSet.getInt("status"));
+			sportsCourses.add(sportsCourse);
+		}
+		return sportsCourses;
+	}
+
+	private ArrayList<SportsCourse> mapResultSetToSportsCoursesForSearch(
+			ResultSet resultSet, SportsCourseCategory sportsCourseCategory)
+			throws SQLException {
+		ArrayList<SportsCourse> sportsCourses = new ArrayList<SportsCourse>();
+		while (resultSet.next()) {
+			SportsCourse sportsCourse = new SportsCourse(
+					resultSet.getString("id"), sportsCourseCategory,
+					resultSet.getString("number"),
+					resultSet.getString("details"),
+					SportsCourse.DATE_NOT_AVAILABLE, null, null,
+					resultSet.getString("location"), null, null,
+					resultSet.getString("host"),
+					SportsCourse.PRICE_NOT_AVAILABLE,
+					SportsCourse.STATUS_NOT_AVAILABLE);
 			sportsCourses.add(sportsCourse);
 		}
 		return sportsCourses;

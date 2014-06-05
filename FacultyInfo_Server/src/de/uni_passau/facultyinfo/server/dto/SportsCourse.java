@@ -33,6 +33,7 @@ public class SportsCourse {
 	private String id;
 	@XmlTransient
 	private SportsCourseCategory category;
+	private String categoryTitle;
 	private String number;
 	private String details;
 	private int dayOfWeek;
@@ -79,6 +80,14 @@ public class SportsCourse {
 
 	public void setCategory(SportsCourseCategory category) {
 		this.category = category;
+	}
+	
+	public String getCategoryTitle() {
+		return categoryTitle;
+	}
+
+	public void setCategoryTitle(String categoryTitle) {
+		this.categoryTitle = categoryTitle;
 	}
 
 	public String getNumber() {

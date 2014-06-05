@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 
 import de.uni_passau.facultyinfo.server.dao.SportsCourseDAO;
 import de.uni_passau.facultyinfo.server.dataloader.SportsCourseLoader;
+import de.uni_passau.facultyinfo.server.dto.SportsCourceSearchResponse;
 import de.uni_passau.facultyinfo.server.dto.SportsCourse;
 import de.uni_passau.facultyinfo.server.dto.SportsCourseCategory;
 
@@ -75,15 +76,26 @@ public class SportsCourseResource {
 		return sportsCourse;
 	}
 
+	// @Path("/find/{searchString}")
+	// @GET
+	// @Produces(MediaType.APPLICATION_JSON)
+	// public List<SportsCourseCategory> findSportsCourses(
+	// @PathParam("searchString") String searchString) {
+	// SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
+	// List<SportsCourseCategory> sportsCourseCategories = sportsCourseDAO
+	// .findSportsCourseCategories(searchString);
+	// return sportsCourseCategories;
+	// }
+
 	@Path("/find/{searchString}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<SportsCourseCategory> findSportsCourses(
+	public SportsCourceSearchResponse findSportsCoursesV2(
 			@PathParam("searchString") String searchString) {
 		SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
-		List<SportsCourseCategory> sportsCourseCategories = sportsCourseDAO
-				.findSportsCourseCategories(searchString);
-		return sportsCourseCategories;
+		SportsCourceSearchResponse response = sportsCourseDAO
+				.find(searchString);
+		return response;
 	}
 
 	@Path("/load")
