@@ -3,7 +3,6 @@ package de.uni_passau.facultyinfo.server.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -79,44 +78,6 @@ public class ContactPersonDAO {
 			e.printStackTrace();
 			return null;
 		}
-	}
-
-	public List<ContactGroup> findContactGroups(String searchString) {
-		ArrayList<ContactGroup> searchResults = new ArrayList<ContactGroup>();
-
-		if (searchString != null && !searchString.isEmpty()) {
-
-			List<ContactGroup> contactGroups = getFullContactGroups();
-			Pattern pattern = Pattern.compile(searchString,
-					Pattern.CASE_INSENSITIVE + Pattern.LITERAL);
-
-			for (ContactGroup contactGroup : contactGroups) {
-				if (contactGroup.getTitle() != null
-						&& pattern.matcher(contactGroup.getTitle()).find()) {
-					searchResults.add(contactGroup);
-				} else {
-					ArrayList<ContactPerson> matchingContactPersons = new ArrayList<ContactPerson>();
-					for (ContactPerson contactPerson : contactGroup
-							.getContactPersons()) {
-						contactPerson.setContactGroup(null);
-						if ((contactPerson.getName() != null && pattern
-								.matcher(contactPerson.getName()).find())) {
-							matchingContactPersons.add(contactPerson);
-							contactPerson.setContactGroup(contactGroup);
-						}
-					}
-					if (!matchingContactPersons.isEmpty()) {
-						contactGroup.setContactPersons(Collections
-								.unmodifiableList(matchingContactPersons));
-						searchResults.add(contactGroup);
-					}
-				}
-			}
-
-			return Collections.unmodifiableList(searchResults);
-		}
-
-		return searchResults;
 	}
 
 	public ContactSearchResponse find(String searchString) {

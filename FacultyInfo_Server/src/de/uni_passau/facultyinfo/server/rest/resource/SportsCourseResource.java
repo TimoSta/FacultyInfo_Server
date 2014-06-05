@@ -76,17 +76,6 @@ public class SportsCourseResource {
 		return sportsCourse;
 	}
 
-	// @Path("/find/{searchString}")
-	// @GET
-	// @Produces(MediaType.APPLICATION_JSON)
-	// public List<SportsCourseCategory> findSportsCourses(
-	// @PathParam("searchString") String searchString) {
-	// SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
-	// List<SportsCourseCategory> sportsCourseCategories = sportsCourseDAO
-	// .findSportsCourseCategories(searchString);
-	// return sportsCourseCategories;
-	// }
-
 	@Path("/find/{searchString}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

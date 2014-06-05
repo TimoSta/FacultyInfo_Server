@@ -162,52 +162,6 @@ public class SportsCourseDAO {
 		}
 	}
 
-	// public List<SportsCourseCategory> findSportsCourseCategories(
-	// String searchString) {
-	// ArrayList<SportsCourseCategory> searchResults = new
-	// ArrayList<SportsCourseCategory>();
-	//
-	// if (searchString != null && !searchString.isEmpty()) {
-	//
-	// List<SportsCourseCategory> sportsCourseCategories =
-	// getFullSportsCourseCategories();
-	// Pattern pattern = Pattern.compile(searchString,
-	// Pattern.CASE_INSENSITIVE + Pattern.LITERAL);
-	//
-	// for (SportsCourseCategory sportsCourseCategory : sportsCourseCategories)
-	// {
-	// if (sportsCourseCategory.getTitle() != null
-	// && pattern.matcher(sportsCourseCategory.getTitle())
-	// .find()) {
-	// searchResults.add(sportsCourseCategory);
-	// } else {
-	// ArrayList<SportsCourse> matchingSportsCourses = new
-	// ArrayList<SportsCourse>();
-	// for (SportsCourse sportsCourse : sportsCourseCategory
-	// .getSportsCourses()) {
-	// sportsCourse.setCategory(null);
-	// if ((sportsCourse.getDetails() != null && pattern
-	// .matcher(sportsCourse.getDetails()).find())
-	// || (sportsCourse.getHost() != null && pattern
-	// .matcher(sportsCourse.getHost()).find())) {
-	// matchingSportsCourses.add(sportsCourse);
-	// sportsCourse.setCategory(sportsCourseCategory);
-	// }
-	// }
-	// if (!matchingSportsCourses.isEmpty()) {
-	// sportsCourseCategory.setSportsCourses(Collections
-	// .unmodifiableList(matchingSportsCourses));
-	// searchResults.add(sportsCourseCategory);
-	// }
-	// }
-	// }
-	//
-	// return Collections.unmodifiableList(searchResults);
-	// }
-	//
-	// return searchResults;
-	// }
-
 	public SportsCourceSearchResponse find(String searchString) {
 		SportsCourceSearchResponse response = new SportsCourceSearchResponse();
 
