@@ -213,7 +213,7 @@ public class SportsCourseDAO {
 
 		if (searchString != null && !searchString.isEmpty()) {
 
-			List<SportsCourseCategory> sportsCourseCategories = getFullSportsCourseCategories();
+			List<SportsCourseCategory> sportsCourseCategories = getSportsCourseCategoriesForSearch();
 			Pattern pattern = Pattern.compile(searchString,
 					Pattern.CASE_INSENSITIVE + Pattern.LITERAL);
 
@@ -312,6 +312,40 @@ public class SportsCourseDAO {
 	}
 
 	private List<SportsCourseCategory> getFullSportsCourseCategories() {
+		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
+				"SELECT id, title FROM sportscoursecategories ORDER BY title");
+		if (resultSet == null) {
+			return null;
+		}
+
+		try {
+			ArrayList<SportsCourseCategory> sportsCourseCategories = mapResultSetToSportsCourseCategories(resultSet);
+
+			for (SportsCourseCategory sportsCourseCategory : sportsCourseCategories) {
+				AttributeContainer attributes = new AttributeContainer();
+				attributes.add(1, sportsCourseCategory.getId());
+				ResultSet sportsCourseResultSet = JDBCConnection
+						.getInstance()
+						.executeSelect(
+								"SELECT id, category, number, details, dayofweek, starttime, endtime, location, startdate, enddate, host, price, status FROM sportscourses WHERE category = ? ORDER BY details, dayofweek, starttime",
+								attributes);
+				if (sportsCourseResultSet == null) {
+					continue;
+				}
+
+				sportsCourseCategory
+						.setSportsCourses(mapResultSetToSportsCourses(
+								sportsCourseResultSet, sportsCourseCategory));
+			}
+
+			return sportsCourseCategories;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private List<SportsCourseCategory> getSportsCourseCategoriesForSearch() {
 		ResultSet resultSet = JDBCConnection.getInstance().executeSelect(
 				"SELECT id, title FROM sportscoursecategories ORDER BY title");
 		if (resultSet == null) {
