@@ -48,7 +48,7 @@ public class EventResource {
 	@Path("/load")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String load() {
+	public int load() {
 		EventLoader eventLoader = new EventLoader();
 		return eventLoader.load();
 	}

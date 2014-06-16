@@ -24,7 +24,7 @@ public class BusLineResource {
 	@Path("/load")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String load() {
+	public int load() {
 		BusLineLoader busLineLoader = new BusLineLoader();
 		return busLineLoader.load();
 	}

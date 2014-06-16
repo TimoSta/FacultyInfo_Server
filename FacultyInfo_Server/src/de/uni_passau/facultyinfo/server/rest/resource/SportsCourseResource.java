@@ -90,7 +90,7 @@ public class SportsCourseResource {
 	@Path("/load")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String load() {
+	public int load() {
 		SportsCourseLoader sportsCourseLoader = new SportsCourseLoader();
 		return sportsCourseLoader.load();
 	}

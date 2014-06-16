@@ -18,48 +18,63 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import de.uni_passau.facultyinfo.server.dao.MenuDAO;
+import de.uni_passau.facultyinfo.server.dao.MetadataDAO;
 import de.uni_passau.facultyinfo.server.dto.MenuItem;
+import de.uni_passau.facultyinfo.server.dto.Metadata;
 
 public class MenuLoader {
 
-	private static final String URL = "http://www.stwno.de/infomax/daten-extern/html/speiseplan-render.php";
 	private MenuDAO menuDAO = new MenuDAO();
 
-	public String load() {
-		String result = "";
+	public int load() {
+		int status = 0;
 
-		result += "Deleting from Table menuitems";
-		menuDAO.deleteAllMenuItems();
-		result += " -- done\n";
-		result += "Loading menu items...\n";
+		MetadataDAO metadataDAO = new MetadataDAO();
+		Metadata menuMetadata = metadataDAO.getMetadata(Metadata.NAME_MENU);
 
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
-		cal.setTime(new Date());
-		cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		Date current = cal.getTime();
+		if (menuMetadata != null && menuMetadata.getSourceUrl() != null
+				&& !menuMetadata.getSourceUrl().isEmpty()) {
 
-		result += processWeek(current, "dw");
+			boolean responseValue = true;
 
-		cal.setTime(current);
-		cal.add(Calendar.DAY_OF_WEEK, 7);
-		current = cal.getTime();
+			menuDAO.deleteAllMenuItems();
 
-		result += processWeek(current, "nw");
+			GregorianCalendar cal = new GregorianCalendar();
+			cal.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
+			cal.setTime(new Date());
+			cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+			cal.set(Calendar.HOUR_OF_DAY, 0);
+			cal.set(Calendar.MINUTE, 0);
+			cal.set(Calendar.SECOND, 0);
+			Date current = cal.getTime();
 
-		return result;
+			responseValue = responseValue
+					&& processWeek(current, "dw", menuMetadata.getSourceUrl());
+
+			cal.setTime(current);
+			cal.add(Calendar.DAY_OF_WEEK, 7);
+			current = cal.getTime();
+
+			responseValue = responseValue
+					&& processWeek(current, "nw", menuMetadata.getSourceUrl());
+
+			status = responseValue ? 0 : 1;
+		} else {
+			status = 2;
+		}
+
+		metadataDAO.updateStatuscode(Metadata.NAME_MENU, status);
+
+		return status;
 	}
 
-	private String processWeek(Date currentDate, String weekString) {
+	private boolean processWeek(Date currentDate, String weekString, String url) {
 		SimpleDateFormat sdf = new SimpleDateFormat("y-MM-dd");
-		String result = "";
+		boolean responseValue = true;
 
 		for (int i = 0; i < 5; i++) {
 			try {
-				Document document = Jsoup.connect(URL).data("func", "make_spl")
+				Document document = Jsoup.connect(url).data("func", "make_spl")
 						.data("locId", "UNI-P").data("lang", "de")
 						.data("w", weekString)
 						.data("date", sdf.format(currentDate)).post();
@@ -116,13 +131,8 @@ public class MenuLoader {
 					MenuItem menuItem = new MenuItem(id, currentDate, name,
 							currentType, 0, priceStudent, priceEmployee,
 							priceExternal);
-					result += sdf.format(menuItem.getDay()) + " - "
-							+ menuItem.getName();
-					if (menuDAO.createMenuItem(menuItem)) {
-						result += " -- done\n";
-					} else {
-						result += " -- error\n";
-					}
+					responseValue = responseValue
+							&& menuDAO.createMenuItem(menuItem);
 				}
 
 				Calendar cal = Calendar.getInstance();
@@ -133,6 +143,6 @@ public class MenuLoader {
 				e.printStackTrace();
 			}
 		}
-		return result;
+		return responseValue;
 	}
 }

@@ -34,7 +34,7 @@ public class Scheduler {
 
 	@Schedule(minute = "40")
 	public void NewsTask() {
-		System.out.println(new NewsLoader().loadNews());
+		System.out.println(new NewsLoader().load());
 	}
 
 	@Schedule(minute = "50")

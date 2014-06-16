@@ -39,7 +39,7 @@ public class MenuResource {
 	@Path("/load")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String load() {
+	public int load() {
 		MenuLoader menuLoader = new MenuLoader();
 		return menuLoader.load();
 	}

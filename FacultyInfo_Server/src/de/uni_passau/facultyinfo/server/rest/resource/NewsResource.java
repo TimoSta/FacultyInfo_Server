@@ -39,8 +39,8 @@ public class NewsResource {
 	@Path("/load")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String loadNews() {
+	public int loadNews() {
 		NewsLoader newsLoader = new NewsLoader();
-		return newsLoader.loadNews();
+		return newsLoader.load();
 	}
 }

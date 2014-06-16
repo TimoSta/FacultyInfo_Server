@@ -40,7 +40,7 @@ public class FaqResource {
 	@Path("/load")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String loadNews() {
+	public int loadNews() {
 		FaqLoader faqLoader = new FaqLoader();
 		return faqLoader.loadFaqs();
 	}
