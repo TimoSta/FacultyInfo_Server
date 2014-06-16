@@ -2,6 +2,7 @@ package de.uni_passau.facultyinfo.server.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 import de.uni_passau.facultyinfo.server.dao.connection.AttributeContainer;
 import de.uni_passau.facultyinfo.server.dao.connection.JDBCConnection;
@@ -32,10 +33,13 @@ public class MetadataDAO {
 	public boolean updateStatuscode(String name, int statuscode) {
 		AttributeContainer attributes = new AttributeContainer();
 		attributes.add(1, statuscode);
-		attributes.add(2, name);
-		return JDBCConnection.getInstance().executeStatement(
-				"UPDATE metadata SET lastStatuscode = ? WHERE name = ?",
-				attributes) == 1;
+		attributes.add(2, UUID.randomUUID().toString());
+		attributes.add(3, name);
+		return JDBCConnection
+				.getInstance()
+				.executeStatement(
+						"UPDATE metadata SET lastStatuscode = ?, uuid = ? WHERE name = ?",
+						attributes) == 1;
 	}
 
 	private Metadata mapResultSetToMetadata(ResultSet resultSet)
