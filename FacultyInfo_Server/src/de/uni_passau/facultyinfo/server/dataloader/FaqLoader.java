@@ -25,7 +25,7 @@ public class FaqLoader {
 		MetadataDAO metadataDAO = new MetadataDAO();
 		Metadata faqMetadata = metadataDAO.getMetadata(Metadata.NAME_FAQS);
 
-		if (faqMetadata.getSourceUrl() != null
+		if (faqMetadata != null && faqMetadata.getSourceUrl() != null
 				&& !faqMetadata.getSourceUrl().isEmpty()) {
 			boolean returnValue = true;
 
@@ -33,8 +33,7 @@ public class FaqLoader {
 			faqDAO.deleteAllFaqs();
 			faqDAO.deleteAllFaqCategories();
 
-			Connection connection = Jsoup
-					.connect("http://www.neu.fs-wiwi.de/index.php/de/faq");
+			Connection connection = Jsoup.connect(faqMetadata.getSourceUrl());
 			connection.ignoreContentType(true);
 
 			try {

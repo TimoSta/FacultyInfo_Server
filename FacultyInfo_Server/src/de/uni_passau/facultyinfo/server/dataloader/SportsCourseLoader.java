@@ -22,8 +22,6 @@ import de.uni_passau.facultyinfo.server.dto.SportsCourse;
 import de.uni_passau.facultyinfo.server.dto.SportsCourseCategory;
 
 public class SportsCourseLoader {
-	private static final String BASE_URL = "http://online.sportz.uni-passau.de/angebote/aktueller_zeitraum/";
-
 	public int load() {
 		int status = 0;
 
@@ -53,7 +51,7 @@ public class SportsCourseLoader {
 							.select("a").get(0);
 					String categoryId = UUID.randomUUID().toString();
 					String categoryTitle = sportsCourseCategoryElement.text();
-					String categoryUrl = BASE_URL
+					String categoryUrl = sportsCourseMetadata.getSourceUrl()
 							+ sportsCourseCategoryElement.attr("href");
 					SportsCourseCategory category = new SportsCourseCategory(
 							categoryId, categoryTitle);
