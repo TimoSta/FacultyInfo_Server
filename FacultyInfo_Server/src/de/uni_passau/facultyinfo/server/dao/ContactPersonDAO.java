@@ -171,44 +171,6 @@ public class ContactPersonDAO {
 		return response;
 	}
 
-	public boolean createContactGroup(ContactGroup contactGroup) {
-		AttributeContainer attributes = new AttributeContainer();
-		attributes.add(1, contactGroup.getId());
-		attributes.add(2, contactGroup.getTitle());
-		attributes.add(3, contactGroup.getDescription());
-		return JDBCConnection
-				.getInstance()
-				.executeStatement(
-						"INSERT INTO contactgroups (id, title, description) VALUES (?, ?, ?)",
-						attributes) == 1;
-	}
-
-	public boolean createContactPerson(ContactPerson contactPerson) {
-		AttributeContainer attributes = new AttributeContainer();
-		attributes.add(1, contactPerson.getId());
-		attributes.add(2, contactPerson.getContactGroup().getId());
-		attributes.add(3, contactPerson.getName());
-		attributes.add(4, contactPerson.getOffice());
-		attributes.add(5, contactPerson.getPhone());
-		attributes.add(6, contactPerson.getEmail());
-		attributes.add(7, contactPerson.getDescription());
-		return JDBCConnection
-				.getInstance()
-				.executeStatement(
-						"INSERT INTO contactpersons (id, contactgroup, name, office, phone, email, description) VALUES ( ?, ?, ?, ?, ?, ?, ?)",
-						attributes) == 1;
-	}
-
-	public void deleteAllContactGroups() {
-		JDBCConnection.getInstance().executeStatement(
-				"DELETE FROM contactgroups");
-	}
-
-	public void deleteAllContactPersons() {
-		JDBCConnection.getInstance().executeStatement(
-				"DELETE FROM contactpersons");
-	}
-
 	private List<ContactGroup> getFullContactGroups() {
 		ResultSet resultSet = JDBCConnection
 				.getInstance()

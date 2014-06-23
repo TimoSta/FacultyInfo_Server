@@ -48,44 +48,6 @@ public class MapMarkerDAO {
 		}
 	}
 
-	public boolean createMapMarkerCategory(MapMarkerCategory mapMarkerCategory) {
-		AttributeContainer attributes = new AttributeContainer();
-		attributes.add(1, mapMarkerCategory.getId());
-		attributes.add(2, mapMarkerCategory.getTitle());
-		attributes.add(3, mapMarkerCategory.getSuperCategory() == null ? null
-				: mapMarkerCategory.getSuperCategory().getId());
-		return JDBCConnection
-				.getInstance()
-				.executeStatement(
-						"INSERT INTO mapmarkercategories (id, title, supercategory) VALUES (?, ?, ?)",
-						attributes) == 1;
-	}
-
-	public boolean createMapMarker(MapMarker mapMarker) {
-		AttributeContainer attributes = new AttributeContainer();
-		attributes.add(1, mapMarker.getId());
-		attributes.add(2, mapMarker.getName());
-		attributes.add(3, mapMarker.getDescription());
-		attributes.add(4, mapMarker.getLatitude());
-		attributes.add(5, mapMarker.getLongitude());
-		attributes.add(6, mapMarker.getCategory() == null ? null : mapMarker
-				.getCategory().getId());
-		return JDBCConnection
-				.getInstance()
-				.executeStatement(
-						"INSERT INTO mapmarkers (id, name, description, latitude, longitude, category) VALUES ( ?, ?, ?, ?, ?, ?)",
-						attributes) == 1;
-	}
-
-	public void deleteAllMapMarkerCategories() {
-		JDBCConnection.getInstance().executeStatement(
-				"DELETE FROM mapmarkercategories");
-	}
-
-	public void deleteAllMapMarkers() {
-		JDBCConnection.getInstance().executeStatement("DELETE FROM mapmarkers");
-	}
-
 	private ArrayList<MapMarker> mapResultSetToMapMarkers(ResultSet resultSet,
 			MapMarkerCategory mapMarkerCategory) throws SQLException {
 		if (resultSet != null) {

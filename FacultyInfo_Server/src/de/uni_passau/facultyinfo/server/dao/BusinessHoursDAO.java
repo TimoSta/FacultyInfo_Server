@@ -70,44 +70,6 @@ public class BusinessHoursDAO {
 		}
 	}
 
-	public boolean createFacility(BusinessHoursFacility facility) {
-		AttributeContainer attributes = new AttributeContainer();
-		attributes.add(1, facility.getId());
-		attributes.add(2, facility.getName());
-		attributes.add(3, facility.getType());
-		return JDBCConnection
-				.getInstance()
-				.executeStatement(
-						"INSERT INTO businesshoursfacilities (id, name, type) VALUES (?, ?, ?)",
-						attributes) == 1;
-	}
-
-	public boolean createBusinessHours(BusinessHours businessHours) {
-		AttributeContainer attributes = new AttributeContainer();
-		attributes.add(1, businessHours.getId());
-		attributes.add(2, businessHours.getAssociatedFacility().getId());
-		attributes.add(3, businessHours.getDayOfWeek());
-		attributes.add(4, businessHours.getPhase());
-		attributes.add(5, businessHours.getStatus());
-		attributes.add(6, businessHours.getOpeningTime());
-		attributes.add(7, businessHours.getClosingTime());
-		return JDBCConnection
-				.getInstance()
-				.executeStatement(
-						"INSERT INTO businesshours (id, facility, dayofweek, phase, status, openingtime, closingtime) VALUES ( ?, ?, ?, ?, ?, ?, ?)",
-						attributes) == 1;
-	}
-
-	public void deleteAllFacilities() {
-		JDBCConnection.getInstance().executeStatement(
-				"DELETE FROM businesshoursfacilities");
-	}
-
-	public void deleteAllBusinessHours() {
-		JDBCConnection.getInstance().executeStatement(
-				"DELETE FROM businesshours");
-	}
-
 	private ArrayList<BusinessHoursFacility> mapResultSetToFacilities(
 			ResultSet resultSet) throws SQLException {
 		ArrayList<BusinessHoursFacility> facilities = new ArrayList<BusinessHoursFacility>();

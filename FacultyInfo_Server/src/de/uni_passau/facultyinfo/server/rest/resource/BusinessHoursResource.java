@@ -11,7 +11,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import de.uni_passau.facultyinfo.server.dao.BusinessHoursDAO;
-import de.uni_passau.facultyinfo.server.dataloader.BusinessHoursLoader;
 import de.uni_passau.facultyinfo.server.dto.BusinessHoursFacility;
 
 @Path("/businesshours")
@@ -42,13 +41,5 @@ public class BusinessHoursResource {
 			throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
 		return facility;
-	}
-
-	@Path("/load")
-	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	public String load() {
-		BusinessHoursLoader businessHoursLoader = new BusinessHoursLoader();
-		return businessHoursLoader.load();
 	}
 }

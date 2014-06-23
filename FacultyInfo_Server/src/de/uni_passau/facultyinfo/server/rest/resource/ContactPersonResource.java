@@ -11,7 +11,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import de.uni_passau.facultyinfo.server.dao.ContactPersonDAO;
-import de.uni_passau.facultyinfo.server.dataloader.ContactPersonLoader;
 import de.uni_passau.facultyinfo.server.dto.ContactGroup;
 import de.uni_passau.facultyinfo.server.dto.ContactSearchResponse;
 
@@ -45,13 +44,5 @@ public class ContactPersonResource {
 		ContactPersonDAO contactPersonDAO = new ContactPersonDAO();
 		ContactSearchResponse response = contactPersonDAO.find(searchString);
 		return response;
-	}
-
-	@Path("/load")
-	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	public String loadNews() {
-		ContactPersonLoader contactPersonLoader = new ContactPersonLoader();
-		return contactPersonLoader.load();
 	}
 }
