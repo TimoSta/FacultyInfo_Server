@@ -12,6 +12,7 @@ public class ContactPerson {
 	private String phone;
 	private String email;
 	private String description;
+	private String groupTitle;
 	@XmlTransient
 	private ContactGroup contactGroup;
 
@@ -25,6 +26,20 @@ public class ContactPerson {
 		this.email = email;
 		this.description = description;
 		this.contactGroup = contactGroup;
+		this.groupTitle = null;
+	}
+	
+	public ContactPerson(String id, String name, String office, String phone,
+			String email, String description, String groupTitle) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.office = office;
+		this.phone = phone;
+		this.email = email;
+		this.description = description;
+		this.contactGroup = null;
+		this.groupTitle = groupTitle;
 	}
 
 	public String getId() {
@@ -82,4 +97,13 @@ public class ContactPerson {
 	public void setContactGroup(ContactGroup contactGroup) {
 		this.contactGroup = contactGroup;
 	}
+
+	public String getGroupTitle() {
+		return groupTitle;
+	}
+
+	public void setGroupTitle(String groupTitle) {
+		this.groupTitle = groupTitle;
+	}
+
 }

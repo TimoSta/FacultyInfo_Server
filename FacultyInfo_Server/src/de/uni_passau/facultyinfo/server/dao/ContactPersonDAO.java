@@ -27,22 +27,6 @@ public class ContactPersonDAO {
 		try {
 			ArrayList<ContactGroup> contactGroups = mapResultSetToContactGroups(resultSet);
 
-			// for (ContactGroup contactGroup : contactGroups) {
-			// ArrayList<String> attributes = new ArrayList<String>();
-			// attributes.add(contactGroup.getId());
-			// ResultSet contactPersonResultSet = JDBCConnection
-			// .getInstance()
-			// .executeSelect(
-			// "SELECT id, name, office, phone, email, description FROM contactpersons WHERE contactgroup = ?",
-			// attributes);
-			// if (contactPersonResultSet == null) {
-			// continue;
-			// }
-			//
-			// contactGroup.setContactPersons(mapResultSetToContactPersons(
-			// contactPersonResultSet, contactGroup));
-			// }
-
 			return contactGroups;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -74,6 +58,26 @@ public class ContactPersonDAO {
 					contactPersonResultSet, contactGroup));
 
 			return contactGroup;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public ContactPerson getContactPerson(String id) {
+		AttributeContainer attributes = new AttributeContainer();
+		attributes.add(1, id);
+		ResultSet resultSet = JDBCConnection
+				.getInstance()
+				.executeSelect(
+						"SELECT contactpersons.id, contactpersons.name, contactpersons.office, contactpersons.phone, contactpersons.email, contactpersons.description, contactgroups.title FROM contactpersons JOIN contactgroups ON contactpersons.contactgroup = contactgroups.id WHERE contactpersons.id = ?",
+						attributes);
+		if (resultSet == null) {
+			return null;
+		}
+
+		try {
+			return mapResultSetToContactPerson(resultSet);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -162,6 +166,7 @@ public class ContactPersonDAO {
 					}
 
 					if (found) {
+						person.setGroupTitle(group.getTitle());
 						response.add(person);
 					}
 				}
@@ -243,12 +248,26 @@ public class ContactPersonDAO {
 		return contactPersons;
 	}
 
+	private ContactPerson mapResultSetToContactPerson(ResultSet resultSet)
+			throws SQLException {
+		if (resultSet.next()) {
+			ContactPerson contactPerson = new ContactPerson(
+					resultSet.getString("id"), resultSet.getString("name"),
+					resultSet.getString("office"),
+					resultSet.getString("phone"), resultSet.getString("email"),
+					resultSet.getString("description"),
+					resultSet.getString("title"));
+			return contactPerson;
+		}
+		return null;
+	}
+
 	private String crop(String input, int start, int offset) {
 		boolean cropStart = start - 50 >= 0;
 		boolean cropEnd = start + offset + 50 < input.length();
 
 		String croppedInput = input.substring(cropStart ? start - 50 : 0,
-				cropEnd ? start + offset + 50 : input.length() - 1);
+				cropEnd ? start + offset + 50 : input.length());
 
 		croppedInput = (cropStart ? "..." : "") + croppedInput
 				+ (cropEnd ? "..." : "");

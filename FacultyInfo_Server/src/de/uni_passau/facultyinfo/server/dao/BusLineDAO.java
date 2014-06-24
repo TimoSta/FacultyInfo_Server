@@ -18,7 +18,7 @@ public class BusLineDAO {
 	}
 
 	public List<BusLine> getBusLines(Integer limit) {
-		String query = "SELECT id, line, direction, departure FROM buslines WHERE departure BETWEEN NOW() AND (NOW() + INTERVAL 1 DAY) ORDER BY departure, line, direction";
+		String query = "SELECT id, line, direction, departure FROM buslines WHERE departure BETWEEN NOW() AND (NOW() + INTERVAL 60 MINUTE) ORDER BY departure, line, direction";
 
 		if (limit != null) {
 			query += " LIMIT " + Integer.toString(limit);

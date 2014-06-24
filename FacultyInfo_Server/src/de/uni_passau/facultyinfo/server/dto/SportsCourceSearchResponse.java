@@ -8,8 +8,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SportsCourceSearchResponse {
-	List<SportsCourseCategory> categories = null;
-	List<SportsCourse> courses = null;
+	private List<SportsCourseCategory> categories = null;
+	private List<SportsCourse> courses = null;
 
 	public SportsCourceSearchResponse() {
 		categories = new ArrayList<SportsCourseCategory>();

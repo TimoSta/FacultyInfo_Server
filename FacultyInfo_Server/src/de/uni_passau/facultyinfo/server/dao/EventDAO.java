@@ -54,7 +54,7 @@ public class EventDAO {
 		ResultSet resultSet = JDBCConnection
 				.getInstance()
 				.executeSelect(
-						"SELECT id, title, subtitle, location, description, host FROM events WHERE id = ?",
+						"SELECT id, title, startdate, enddate, subtitle, location, description, host, url FROM events WHERE id = ?",
 						attributes);
 		if (resultSet == null) {
 			return null;
