@@ -14,6 +14,8 @@ import de.uni_passau.facultyinfo.server.dto.Event;
 
 public class EventDAO {
 
+	private static final int CROP_OFFSET = 30;
+
 	public List<Event> getEvents() {
 		ResultSet resultSet = JDBCConnection
 				.getInstance()
@@ -110,7 +112,11 @@ public class EventDAO {
 					Matcher descriptionMatcher = pattern.matcher(event
 							.getDescription());
 					if (descriptionMatcher.find()) {
-						event.setDescription(crop(event.getDescription(), descriptionMatcher.start(), descriptionMatcher.end()));
+						event.setDescription(crop(
+								event.getDescription(),
+								descriptionMatcher.start(),
+								descriptionMatcher.end()
+										- descriptionMatcher.start()));
 						found = true;
 					} else {
 						event.setDescription(null);
@@ -195,11 +201,12 @@ public class EventDAO {
 	}
 
 	private String crop(String input, int start, int offset) {
-		boolean cropStart = start - 50 >= 0;
-		boolean cropEnd = start + offset + 50 < input.length();
+		boolean cropStart = start - CROP_OFFSET >= 0;
+		boolean cropEnd = start + offset + CROP_OFFSET < input.length();
 
-		String croppedInput = input.substring(cropStart ? start - 50 : 0,
-				cropEnd ? start + offset + 50 : input.length() - 1);
+		String croppedInput = input.substring(cropStart ? start - CROP_OFFSET
+				: 0, cropEnd ? start + offset + CROP_OFFSET
+				: input.length() - 1);
 
 		croppedInput = (cropStart ? "..." : "") + croppedInput
 				+ (cropEnd ? "..." : "");
