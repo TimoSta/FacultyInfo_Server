@@ -1,4 +1,4 @@
-ProjectSeminar1314_Server
+Uni4You - Server Side Application
 =========================
 
-Server for Project Seminar WS 13/14
+This server side application acts as a backend for Uni4You. It executes scheduled automatic data loading processes and publishes web services that enable access to the application data.
