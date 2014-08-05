@@ -24,8 +24,8 @@ public class MenuResource {
 		return menuDAO.getMenuItems();
 	}
 
-	@Path("/{id}")
 	@GET
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public MenuItem getMenuItem(@PathParam("id") String id) {
 		MenuDAO menuDAO = new MenuDAO();
@@ -36,8 +36,8 @@ public class MenuResource {
 		return menuItem;
 	}
 
-	@Path("/load")
 	@GET
+	@Path("/load")
 	@Produces(MediaType.TEXT_PLAIN)
 	public int load() {
 		MenuLoader menuLoader = new MenuLoader();

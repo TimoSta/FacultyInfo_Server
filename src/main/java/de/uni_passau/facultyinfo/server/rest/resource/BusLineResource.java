@@ -21,8 +21,8 @@ public class BusLineResource {
 		return busLineDAO.getBusLines();
 	}
 
-	@Path("/load")
 	@GET
+	@Path("/load")
 	@Produces(MediaType.TEXT_PLAIN)
 	public int load() {
 		BusLineLoader busLineLoader = new BusLineLoader();

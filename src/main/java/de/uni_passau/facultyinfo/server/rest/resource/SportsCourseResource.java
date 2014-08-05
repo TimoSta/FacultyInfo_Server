@@ -26,8 +26,8 @@ public class SportsCourseResource {
 		return sportsCourseDAO.getSportsCourseCategories();
 	}
 
-	@Path("/{id}")
 	@GET
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public SportsCourseCategory getSportsCourseCategory(
 			@PathParam("id") String id) {
@@ -40,8 +40,8 @@ public class SportsCourseResource {
 		return sportsCourseCategory;
 	}
 
-	@Path("/today")
 	@GET
+	@Path("/today")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<SportsCourseCategory> getSportsCourseCategoriesToday() {
 		SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
@@ -50,8 +50,8 @@ public class SportsCourseResource {
 		return sportsCourseCategories;
 	}
 
-	@Path("/today/{id}")
 	@GET
+	@Path("/today/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public SportsCourseCategory getSportsCourseCategoryToday(
 			@PathParam("id") String id) {
@@ -64,8 +64,8 @@ public class SportsCourseResource {
 		return sportsCourseCategory;
 	}
 
-	@Path("/course/{id}")
 	@GET
+	@Path("/course/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public SportsCourse getSportsCourse(@PathParam("id") String id) {
 		SportsCourseDAO sportsCourseDAO = new SportsCourseDAO();
@@ -76,8 +76,8 @@ public class SportsCourseResource {
 		return sportsCourse;
 	}
 
-	@Path("/find/{searchString}")
 	@GET
+	@Path("/find/{searchString}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public SportsCourceSearchResponse findSportsCoursesV2(
 			@PathParam("searchString") String searchString) {
@@ -87,8 +87,8 @@ public class SportsCourseResource {
 		return response;
 	}
 
-	@Path("/load")
 	@GET
+	@Path("/load")
 	@Produces(MediaType.TEXT_PLAIN)
 	public int load() {
 		SportsCourseLoader sportsCourseLoader = new SportsCourseLoader();

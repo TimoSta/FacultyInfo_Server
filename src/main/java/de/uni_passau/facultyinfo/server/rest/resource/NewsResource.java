@@ -24,8 +24,8 @@ public class NewsResource {
 		return newsDAO.getNewsList();
 	}
 
-	@Path("/{id}")
 	@GET
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public News getArticle(@PathParam("id") String id) {
 		NewsDAO newsDAO = new NewsDAO();
@@ -36,8 +36,8 @@ public class NewsResource {
 		return news;
 	}
 
-	@Path("/load")
 	@GET
+	@Path("/load")
 	@Produces(MediaType.TEXT_PLAIN)
 	public int loadNews() {
 		NewsLoader newsLoader = new NewsLoader();

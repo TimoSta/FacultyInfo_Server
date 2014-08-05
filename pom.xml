@@ -4,7 +4,7 @@
 	<groupId>de.uni_passau.facultyinfo.server</groupId>
 	<artifactId>Uni4You-Server</artifactId>
 	<packaging>war</packaging>
-	<version>1.1.0.RELEASE</version> <!-- e.g. 1.0.0.0-SNAPSHOT -->
+	<version>1.1.0.RELEASE</version>
 	<name>Uni4You-Server</name>
 
 	<dependencies>

@@ -24,8 +24,8 @@ public class EventResource {
 		return eventDAO.getEvents();
 	}
 
-	@Path("/{id}")
 	@GET
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Event getEvent(@PathParam("id") String id) {
 		EventDAO eventDAO = new EventDAO();
@@ -36,8 +36,8 @@ public class EventResource {
 		return event;
 	}
 
-	@Path("/find/{searchString}")
 	@GET
+	@Path("/find/{searchString}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Event> find(@PathParam("searchString") String searchString) {
 		EventDAO eventDAO = new EventDAO();
@@ -45,8 +45,8 @@ public class EventResource {
 		return events;
 	}
 
-	@Path("/load")
 	@GET
+	@Path("/load")
 	@Produces(MediaType.TEXT_PLAIN)
 	public int load() {
 		EventLoader eventLoader = new EventLoader();

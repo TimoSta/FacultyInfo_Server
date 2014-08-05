@@ -25,8 +25,8 @@ public class FaqResource {
 		return faqDAO.getFaqList();
 	}
 
-	@Path("/{id}")
 	@GET
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Faq getFaq(@PathParam("id") String id) {
 		FaqDAO faqDAO = new FaqDAO();
@@ -37,8 +37,8 @@ public class FaqResource {
 		return faq;
 	}
 
-	@Path("/load")
 	@GET
+	@Path("/load")
 	@Produces(MediaType.TEXT_PLAIN)
 	public int loadNews() {
 		FaqLoader faqLoader = new FaqLoader();

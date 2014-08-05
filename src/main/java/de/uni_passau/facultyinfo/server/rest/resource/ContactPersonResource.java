@@ -25,8 +25,8 @@ public class ContactPersonResource {
 		return contactPersonDAO.getContactGroups();
 	}
 
-	@Path("/{id}")
 	@GET
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ContactGroup getContactGroup(@PathParam("id") String id) {
 		ContactPersonDAO contactPersonDAO = new ContactPersonDAO();
@@ -37,8 +37,8 @@ public class ContactPersonResource {
 		return contactGroup;
 	}
 
-	@Path("/person/{id}")
 	@GET
+	@Path("/person/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ContactPerson getContactPerson(@PathParam("id") String id) {
 		ContactPersonDAO contactPersonDAO = new ContactPersonDAO();
@@ -49,8 +49,8 @@ public class ContactPersonResource {
 		return contactPerson;
 	}
 
-	@Path("/find/{searchString}")
 	@GET
+	@Path("/find/{searchString}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ContactSearchResponse find(
 			@PathParam("searchString") String searchString) {

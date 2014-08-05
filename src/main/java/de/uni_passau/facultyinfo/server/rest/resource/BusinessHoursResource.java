@@ -31,8 +31,8 @@ public class BusinessHoursResource {
 		return businessHoursDAO.getLibraries();
 	}
 
-	@Path("/{id}")
 	@GET
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public BusinessHoursFacility getFacility(@PathParam("id") String id) {
 		BusinessHoursDAO businessHoursDAO = new BusinessHoursDAO();
